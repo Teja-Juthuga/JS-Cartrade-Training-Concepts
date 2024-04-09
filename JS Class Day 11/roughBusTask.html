@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+</head>
+<body>
+<script>
+var buses_data = 
+[
+		{	
+			"id" : 999, 
+			"from" : "Kakinada",
+			"to"  : "Hyderabad" , 
+			"GST" : 5,
+			"bus_details" : 
+			[
+				{
+					"bus_name" : "Orange Travels",
+					"description" : "Super Luxury (AC, 2 + 2 Push Back Seats)" ,
+					"price" : 1200,
+					"no._of_seats_available" : 30,
+					"boarding_point" : "P.R.G.Grounds" ,  
+					"droping_point" : "Lakdikapul" , 
+					"boarding_time" : "7:30 pm" , 
+					"arraival_time" : "8:30 am" ,
+					"available_days" : ["Sunday" , "Tuesday", "Thursday" , "Saturday"]
+				},
+				{
+					"bus_name" : "Vikram Travels" , 
+					"description" : "Super Luxury Delux (AC, Sleeper)" ,
+					"price" : 1200,
+					"no._of_seats_available" : 12 , 
+					"boarding_point" : "Bhanugudi" ,
+					"droping_point" : "Ameerpeta" , 
+					"boarding_time" : "8:30 pm" , 
+					"arraival_time" : "7:30 am"  , 
+					"available_days" : ["Sunday" , "Monday", "Tuesday", "Wednesday" , "Thursday", "Friday", "Saturday"]
+				}, 
+				{
+					"bus_name" : "Sunil Travels",
+					"description" : "Super Luxury (NON-AC, 2 + 2 Push Back Seats)" , 
+					"price" : 850,
+					"no._of_seats_available" : 28 , 
+					"boarding_point" : "Jaganadha Puram Bridge" , 
+					"droping_point" : "Secundrabad" , 
+					"boarding_time" : "6:30 pm",
+					"arraival_time" : "9:00 am" ,
+					"available_days" : ["Monday", "Wednesday", "Friday"]
+				}, 
+				{
+					"bus_name" : "Arjun Travels" ,
+					"description" : "Delux (Non-AC, Semi-Sleeper)", 
+					"price" : 800,
+					"no._of_seats_available" : 25 ,
+					"boarding_point" : "Y.S.R.Bridge" , 
+					"droping_point" : "Erragadda" ,
+					"boarding_time" : "7:30 pm",
+					"arraival_time" : "8:30 am" ,
+					"available_days" : ["Sunday" , "Tuesday", "Wednesday" , "Friday"]
+				}
+			]
+		}, 
+		{
+			"id" : 888,
+			"from" : "Kakinada",
+			"to"  : "Vijayawada" , 
+			"GST" : 5,
+			"bus_details" : 
+			[
+				{
+					"bus_name" : "Orange Travels",
+					"description" : "Super Luxury (AC, 2 + 2 Push Back Seats)" , 
+					"price" : 550,
+					"no._of_seats_available" : 30,
+					"boarding_point" : "P.R.G.Grounds" ,  
+					"droping_point" : "Rtc Bus Stand" , 
+					"boarding_time" : "3:00 am" , 
+					"arraival_time" : "8:15 am" ,
+					"available_days" : ["Sunday" , "Tuesday", "Thursday" , "Saturday"]
+				},
+				{
+					"bus_name" : "Chiru Travels" , 
+					"description" : "Super Luxury Delux (AC, Sleeper)" ,
+					"price" : 600,
+					"no._of_seats_available" : 12 , 
+					"boarding_point" : "Bhanugudi" ,
+					"droping_point" : "Rtc Bus Stand" , 
+					"boarding_time" : "2:00 pm" , 
+					"arraival_time" : "7:35 am"  , 
+					"available_days" : ["Sunday" , "Monday", "Tuesday", "Wednesday" , "Thursday", "Friday", "Saturday"]
+				}, 
+				{
+					"bus_name" : "Sri Ram Travels",
+					"description" : "Super Luxury (NON-AC, 2 + 2 Push Back Seats)" , 
+					"price" : 400,
+					"no._of_seats_available" : 28 , 
+					"boarding_point" : "Jaganadha Puram Bridge" , 
+					"droping_point" : "Rtc Bus Stand" , 
+					"boarding_time" : "4:30 am",
+					"arraival_time" : "10:30 am" ,
+					"available_days" : ["Monday", "Wednesday", "Friday"]
+				}, 
+				{
+					"bus_name" : "Sai Travels" ,
+					"description" : "Delux (Non-AC, Semi-Sleeper)", 
+					"price" : 300,
+					"no._of_seats_available" : 25 ,
+					"boarding_point" : "Y.S.R.Bridge" , 
+					"droping_point" : "Rtc Bus Stand" ,
+					"boarding_time" : "7:30 pm",
+					"arraival_time" : "11:30 pm" ,
+					"available_days" : ["Sunday" , "Tuesday", "Wednesday" , "Friday"]
+				}
+			]
+		}, 
+		{
+			"id" : 777,
+			"from" : "Kakinada",
+			"to"  : "Vishakapatnam" , 
+			"GST" : 5,
+			"bus_details" : 
+			[
+				{
+					"bus_name" : "Jagan Anna Travels",
+					"description" : "Super Luxury (AC, 2 + 2 Push Back Seats)" , 
+					"price" : 600,
+					"no._of_seats_available" : 30,
+					"boarding_point" : "P.R.G.Grounds" ,  
+					"droping_point" : "RTC Complex" , 
+					"boarding_time" : "12:15 am" , 
+					"arraival_time" : "8:30 am" ,
+					"available_days" : ["Sunday" , "Tuesday", "Thursday" , "Saturday"]
+				},
+				{
+					"bus_name" : "Srinu Travels" , 
+					"description" : "Super Luxury Delux (AC, Sleeper)" ,
+					"price" : 650,
+					"no._of_seats_available" : 12 , 
+					"boarding_point" : "Bhanugudi" ,
+					"droping_point" : "RTC Complex" , 
+					"boarding_time" : "1:40 pm" , 
+					"arraival_time" : "6:30 pm"  , 
+					"available_days" : ["Sunday" , "Monday", "Tuesday", "Wednesday" , "Thursday", "Friday", "Saturday"]
+				}, 
+				{
+					"bus_name" : "Pingali Travels",
+					"description" : "Super Luxury (NON-AC, 2 + 2 Push Back Seats)" ,
+					"price" : 303,
+					"no._of_seats_available" : 28 , 
+					"boarding_point" : "Jaganadha Puram Bridge" , 
+					"droping_point" : "RTC Complex" , 
+					"boarding_time" : "4:00 am",
+					"arraival_time" : "7:00 am" ,
+					"available_days" : ["Monday", "Wednesday", "Friday"]
+				}, 
+				{
+					"bus_name" : "Arjun Travels" ,
+					"description" : "Delux (Non-AC, Semi-Sleeper)", 
+					"price" : 281,
+					"no._of_seats_available" : 25 ,
+					"boarding_point" : "Y.S.R.Bridge" , 
+					"droping_point" : "Erragadda" ,
+					"boarding_time" : "4:30 pm",
+					"arraival_time" : "7:30 am" ,
+					"available_days" : ["Sunday" , "Tuesday", "Wednesday" , "Friday"]
+				}
+			]
+		}
+	]  
+</script>
+</body>
+</html>

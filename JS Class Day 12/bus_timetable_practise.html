@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Bus Time Table</title>
+	<link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+	<script src="../bootstrap/js/bootstrap.min.js"></script>
+	<script src="buses_list_practise.js" ></script>
+</head>
+<body>
+
+	<div class="container-fluid mt-5">
+		<h3 style="text-align: center;">Find Buses</h3>
+		<table class="table table-borderless table-sm border-width">
+			<tr>
+				<th> Select From Station </th>
+				<th> Select To Station </th>
+			</tr>
+			<tr>
+				<td><select id="find_from_station" ></select></td>
+				<td><select id="find_to_station" ></select></td>
+				<td><input type="button" value="Find" class="btn btn-primary btn-sm" onclick="find_buses()" ></td>
+			</tr>
+		</table>
+		
+		<table id="output_headings" style="display: none;" class="table table-borderless table-hover table-xl">
+			<tr>
+				<th>Bus Id</th>
+				<th>From</th>
+				<th>To</th>
+				<th>Bus Type</th>
+				<th>Arraival Time</th>
+				<th>Depature Time</th>
+				<th>Distance </th>
+				<th>Price </th>
+				<th> Book Here</th>
+			</tr>
+			<tbody id="result_buses"></tbody>
+		</table>
+		<!-- <pre id="bus_list_json" ></pre> -->
+		<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
+	</div>
+<div>
+	<div class="modal modal-xl fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="staticBackdropLabel"> Book Your Tickets Here </h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body">
+	      	<table class="table table-bordered">
+	      		<tr>
+	      			<th>Bus Name </th>
+	      			<th>Boarding time  </th>
+	      			<th>Arraival time </th>
+	      			<th>Price (in Rs.)</th>
+	      		</tr>
+	      		<tr>
+	      			<td id="show_bus_name_popup"></td>
+	      			<td id="show_bus_boarding_time_popup"></td>
+	      			<td id="show_bus_arraival_time_popup"></td>
+	      			<td id="show_bus_ticket_price_popup"></td>
+	      		</tr>
+	      	</table>
+	      	<div class="table-responsive">
+	      		<table class="table table-bordered">
+		        	<tr>
+		        		<th>Enter Your Name</th>
+		        		<th>Enter Your Contact Number</th>
+		        		<th>Date of Journey</th>
+		        		<th>No. of Tickets</th>
+		        		<th></th>
+		        	</tr>
+		        	<tr>
+		        		<td><input type="text" id="customer_name"></td>
+		        		<td><input type="number" id="customer_num"></td>
+		        		<td><input type="Date" id="date_of_journey_input"></td>
+		        		<td><input type="number" id="total_tickets_input"></td>
+		        		<td><input onclick="review_deatils()" type="button" value="+" class="btn btn-primary"></td>
+		        	</tr>
+		        </table>
+	      	</div>
+		   		
+		        <table id="journey_review_details" style="display:none;">
+		        	<tr>
+		        		<th>Name:</th>
+		        		<td id="user_name"></td>
+		        	</tr>
+		        	<tr>
+		        		<th>Contact Number:</th>
+		        		<td id="user_number"></td>
+		        	</tr>
+		        	<tr>
+		        		<th>Journey Details:</th>
+		        		<td id="journey_details"></td>
+		        	</tr>
+		        	<tr>
+		        		<th>Date of Journey:</th>
+		        		<td id="date_of_journey"></td>
+		        	</tr>
+		        	<tr>
+		        		<th>No. of tickets:</th>
+		        		<td id="total_tickets"></td>
+		        	</tr>
+		        	<tr>
+		        		<th>Ticket Price:</th>
+		        		<td id="ticket_price"></td>
+		        	</tr>
+		        	<tr>
+		        		<th>GST:</th>
+		        		<td id="GST"></td>
+		        	</tr>
+		        </table>
+		      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary" onclick="confirmation()">Confirm Booking</button>
+	      </div>
+	    </div>
+	  </div>
+</div>
+	</div>
+	<div class="container-fluid mt-3">
+		
+		<table class="table table-borderless">
+			<tr>
+				<th>Bus Id</th>
+				<th>From</th>
+				<th>To</th>
+				<th>Bus Type</th>
+				<th>Arraival Time</th>
+				<th>Depature Time</th>
+				<th>Distance </th>
+				<th>Price </th>
+				<th></th>
+			</tr>
+			<tbody id="buses_list"></tbody>
+			<tr>
+				<td><input type="text" id="bus_id"></td>
+				<td><select id="bus_from"></select></td>
+				<td><select id="bus_to"></select></td>
+				<td><select id="bus_type"></select></td>
+				<td><input type="text" id="bus_arraival_time" style="width: 60px;"></td>
+				<td><input type="text" id="bus_depature_time" style="width: 60px;" ></td>
+				<td><input type="text" id="bus_distance" style="width: 60px;"></td>
+				<td><input type="text" id="bus_ticket_price" style="width: 90px;"></td>
+				<td><input type="button" class="btn btn-primary btn-sm" value="Add Bus" onclick="add_new_bus()"></td>
+			</tr>
+		</table>		
+	</div>
+
+
+
+<script>
+stations = 
+	[
+		{
+			"id" : "202201",
+			"station" : "Kakinada" 
+		}, 
+		{
+			"id" : "202202",
+			"station" : "Rajahumandry" 
+		}, 
+		{
+			"id" : "202203",
+			"station" : "Amalapuram" 
+		}, 
+		{
+			"id" : "202204",
+			"station" : "Ramachandra Puram" 
+		}, 
+		{
+			"id" : "202205",
+			"station" : "Ravulapalem" 
+		}, 
+		{
+			"id" : "202206",
+			"station" : "Samarlakota" 
+		},
+		{
+			"id" : "202207",
+			"station" : "Peddapuram" 
+		}, 
+		{
+			"id" : "202208",
+			"station" : "Srikakulam" 
+		}, 
+		{
+			"id" : "202209",
+			"station" : "Mandapeta" 
+		}, 
+		{
+			"id" : "202210",
+			"station" : "Vijayawada" 
+		}, 
+		{
+			"id" : "202211",
+			"station" : "Gudiwada" 
+		}, 
+		{
+			"id" : "202212",
+			"station" : "Simhachalam" 
+		},
+		{
+			"id" : "202213",
+			"station" : "Duvvada" 
+		}, 
+		{
+			"id" : "202214",
+			"station" : "Thadi" 
+		}, 
+		{
+			"id" : "202215",
+			"station" : "Jaggampeta" 
+		}, 
+		{
+			"id" : "202216",
+			"station" : "Diwili" 
+		}, 
+		{
+			"id" : "202217",
+			"station" : "Pitapuram" 
+		}, 
+		{
+			"id" : "202218",
+			"station" : "Eluru" 
+		},
+		{
+			"id" : "202219",
+			"station" : "Khammam" 
+		}, 
+		{
+			"id" : "202220",
+			"station" : "Tirupathi" 
+		}, 
+		{
+			"id" : "202221",
+			"station" : "Bheemavaram" 
+		}, 
+		{
+			"id" : "202222",
+			"station" : "Annavaram" 
+		}, 
+		{
+			"id" : "202223",
+			"station" : "Razole" 
+		}, 
+		{
+			"id" : "202224",
+			"station" : "Kadapa" 
+		}, 
+		{
+			"id" : "202225",
+			"station" : "Kuppam" 
+		}
+	]
+
+types = 
+[
+	{
+		"type": "Delux",
+	},
+	{
+		"type": "Luxury",
+	},
+	{
+		"type": "NonStop",
+	},
+	{
+		"type": "NonStopAC",
+	},
+	{
+		"type": "Sleeper AC",
+	},
+	{
+		"type": "Semi - Sleeper AC",
+	},
+	{
+		"type": "Semi - Sleeper",
+	}
+]
+
+/*
+bus_details = 
+[
+	{
+		bus_id : "2000" ,
+		from_bus_id : "202211" ,
+		to_bus_id: "202215", 
+		type : "Luxury",
+		arraival_time : "00:30" , 
+		depature_time:"05:00" , 
+		distance : "90" , 
+		price: "60", 
+	}
+]
+*/
+
+function generate_dropdowns() { 
+	var str = "<option value=''	>Select Type</option>" 
+	for (var k = 0 ; k < types.length ; k++){
+		str += "<option value='" + types[k]['type'] + "' >" + types[k]['type'] + "</option>" 
+	}
+	document.getElementById('bus_type').innerHTML = str ;
+
+	var tstr = "<option value=''> Select</option>" 
+	for (var k = 0 ; k < stations.length ; k++){
+		tstr += "<option value='" + stations[k]['id'] + "' >" + stations[k]['station'] + "</option>" 
+	}
+	document.getElementById("bus_to").innerHTML = tstr ;
+	document.getElementById("bus_from").innerHTML = tstr ; 
+	document.getElementById('find_from_station').innerHTML = tstr ; 
+	document.getElementById('find_to_station').innerHTML = tstr ; 
+}
+
+
+
+function add_new_bus(){
+	bus_details.push({
+		"bus_id" : document.getElementById("bus_id").value , 
+		"from_bus_id" : document.getElementById("bus_from").value ,
+		"to_bus_id" : document.getElementById('bus_to').value , 
+		"type" : document.getElementById("bus_type").value , 
+		"arraival_time" : document.getElementById('bus_arraival_time').value ,
+		"depature_time" : document.getElementById("bus_depature_time").value , 
+		"distance" : document.getElementById('bus_distance').value ,
+		"price" : document.getElementById('bus_ticket_price').value , 
+
+	}) ;
+	display_buses_list() ;
+document.getElementById("bus_id").value = "" ; 
+document.getElementById("bus_from").value = "" ; 
+document.getElementById('bus_to').value = "" ; 
+document.getElementById("bus_type").value = "" ; 
+document.getElementById('bus_arraival_time').value = "" ; 
+document.getElementById("bus_depature_time").value = "" ; 
+document.getElementById('bus_distance').value = "" ; 
+document.getElementById('bus_ticket_price').value   = "" ; 
+}  
+
+
+
+function display_buses_list(){
+	var str = "" ; 
+	for (var i=0 ; i < bus_details.length ; i++){
+		str += "<tr><td>"+ bus_details[i]["bus_id"] + "</td>" ; 
+		str += "<td>" + get_station_through_id( bus_details[i]['from_bus_id']) + "</td>" ; 
+		str += "<td>" + get_station_through_id( bus_details[i]['to_bus_id']) + "</td>" ;
+		str += "<td>" + bus_details[i]["type"] + "</td>" ; 
+		str += "<td>" + bus_details[i]["arraival_time"] + "</td>" ;
+		str += "<td>" + bus_details[i]["depature_time"] + "</td>" ;
+		str += "<td>" + bus_details[i]["distance"] + " Kms "+ "</td>" ;
+		str += "<td>" + bus_details[i]["price"] + "/- "+ "</td>" ;
+		str += `<td></td></tr>`
+	}
+	document.getElementById('buses_list').innerHTML = str ; 
+
+	// document.getElementById("bus_list_json").innerHTML = JSON.stringify(bus_details,null,4);
+}
+
+function get_station_through_id(arg) {
+	for (var i=0; i<stations.length ; i++){
+		  if (arg == stations[i]["id"]){
+		  	return stations[i]["station"] ; 
+		  }
+	}
+	return "Not Found" ;
+}
+
+/*   	//	Random Data Generate Module
+
+function random_number(vfrom,vto){
+	return parseInt( Math.random() * (vto - vfrom) + vfrom );
+}
+
+for (var i=0 ; i < 100 ; i++){
+	id = 2000 + random_number(1, 50)+random_number(50 , 100) ;
+	from_bus_id = stations[random_number(0,23)]['id'] ; 
+	to_bus_id = stations[random_number(0,23)]['id'] ; 
+	if (from_bus_id == to_bus_id){
+		to_bus_id = stations[random_number(0,23)]['id'] ; 
+		if (from_bus_id == to_bus_id){
+			to_bus_id = stations[random_number(0,23)]['id'] ; 
+		}
+	}
+	type = types[random_number(0,6)]["type"] ;
+	arraival_time = random_number(1,24) + " : " + random_number(10 , 60) ; 
+	depature_time = random_number(1,24) + " : " + random_number(10, 60) ;
+	distance = random_number(150,800) ; 
+	price = random_number(150,700) ; 
+
+	bus_details.push({
+		"bus_id" : id ,
+		"from_bus_id" : from_bus_id ,
+		"to_bus_id" : to_bus_id, 
+		"type" : type ,
+		"arraival_time" : arraival_time , 
+		"depature_time" : depature_time , 
+		"distance" : distance , 
+		"price": price, 
+	})
+}
+
+*/ 
+
+
+var available_list = [];
+function find_buses() {
+	document.getElementById("output_headings").style.display = "block" ; 
+	vfrom = document.getElementById("find_from_station").value;
+	vto = document.getElementById("find_to_station").value;
+	for(var i=0;i<bus_details.length;i++){
+		if( bus_details[i]['from_bus_id'] == vfrom && bus_details[i]['to_bus_id'] == vto ){
+			available_list.push(bus_details[i]);
+		}
+	}
+	generate_available_list();
+}
+
+function generate_available_list(){
+	var str = "" ; 
+	for (var i=0 ; i < available_list.length ; i++){
+		str += "<tr><td>"+ available_list[i]["bus_id"] + "</td>" ; 
+		str += "<td>" + get_station_through_id( available_list[i]['from_bus_id']) + "</td>" ; 
+		str += "<td>" + get_station_through_id( available_list[i]['to_bus_id']) + "</td>" ;
+		str += "<td>" + available_list[i]["type"] + "</td>" ; 
+		str += "<td>" + available_list[i]["arraival_time"] + "</td>" ;
+		str += "<td>" + available_list[i]["depature_time"] + "</td>" ;
+		str += "<td>" + available_list[i]["distance"] + " Kms "+ "</td>" ;
+		str += "<td>" + available_list[i]["price"] + "/- "+ "</td>" ;
+		str += "<td><input type='button' value='Book Now' class='btn btn-primary btn-sm' data-bs-toggle='modal' data-bs-target='#staticBackdrop' onclick='get_bus_data(" + i + ")'> <input type='button' class='btn btn-danger btn-sm ' value='X'>"
+	}
+	document.getElementById('result_buses').innerHTML = str ;
+	// document.getElementById("bus_list_json").innerHTML = JSON.stringify(available_list,null,4); 
+}
+
+function get_bus_data(xindex){
+	// console.log(available_list[xindex])
+	document.getElementById('show_bus_name_popup').innerHTML = get_station_through_id( available_list[xindex]['from_bus_id']) + " - " + get_station_through_id( available_list[xindex]['to_bus_id']);
+	document.getElementById("show_bus_boarding_time_popup").innerHTML = available_list[xindex]["arraival_time"] ; 
+	document.getElementById("show_bus_arraival_time_popup").innerHTML = available_list[xindex]["depature_time"] ; 
+	document.getElementById("show_bus_ticket_price_popup").innerHTML =  available_list[xindex]["price"] + "/-"; 
+	document.getElementById("journey_details").innerHTML = get_station_through_id( available_list[xindex]['from_bus_id']) + " - " + get_station_through_id( available_list[xindex]['to_bus_id']);
+	document.getElementById("ticket_price").innerHTML = available_list[xindex]["price"] + "/-";  
+}
+
+function review_deatils() {
+	document.getElementById('journey_review_details').style.display = "block" ; 
+	var cus_name = document.getElementById("customer_name").value ; 
+	var cus_num = document.getElementById("customer_num").value ; 
+	var cus_doj = document.getElementById("date_of_journey_input").value ; 
+	var cus_total_tickets = document.getElementById("total_tickets_input").value ; 
+
+	document.getElementById("user_name").innerHTML = cus_name ;
+	document.getElementById("user_number").innerHTML = cus_num ; 	
+	document.getElementById("date_of_journey").innerHTML = cus_doj ; 
+	document.getElementById("total_tickets").innerHTML = cus_total_tickets ; 
+	document.getElementById("GST").innerHTML = "12%" ; 
+}
+
+function confirmation() {
+	alert("Your Ticket has been Booked Successfully. You will receive your ticket shortly on registered Mobile Number. Thank You!!! ")
+}
+
+display_buses_list()
+generate_dropdowns()
+
+
+</script>
+</body>
+</html>

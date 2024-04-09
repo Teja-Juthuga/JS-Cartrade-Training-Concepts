@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+</head>
+<body>
+	<h3 id="randomId"></h3>
+	<button onclick="start()">Start</button>
+	<button onclick="stop()">Stop</button>
+<script>
+var x = 0 ;
+	sec = 0 ;
+	min = 0 ; 
+	hrs = 0 ; 
+	function start() {
+		x = setInterval("timer()" , 10 );
+		
+	}
+
+	function stop(){
+		clearInterval(x)  ; 
+	}
+	function timer(){
+		time = "" ; 
+		if (hrs < 10){
+			time = time + "0" + hrs ; 
+		}
+		else {
+			time += hrs ; 
+		} 
+
+		if (min < 10){
+			time += " : " + "0" + min ;  
+		}
+		else {
+			time += " : " + min ; 
+		}
+
+		if (sec < 10) {
+			time += " : " + "0" + sec ; 
+		}
+		else {
+			time += " : " + sec ; 
+		}
+		document.getElementById('randomId').innerHTML= time ; 
+		sec++ 
+		if (sec > 59 ){
+			sec = 0 ; 
+			min = min + 1 ; 
+		}
+		if (min > 59 ){
+			min = 0 ; 
+			hrs += 1 ; 
+		}
+	}
+	
+
+</script>
+</body>
+</html>

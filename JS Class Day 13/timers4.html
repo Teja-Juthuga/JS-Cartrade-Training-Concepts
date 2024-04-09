@@ -1,0 +1,33 @@
+<html>
+<body>
+	<script>
+
+ 		r = 0;
+		g = 0;
+		b = 0;
+
+		function random_number(vfrom,vto){
+       		return parseInt(Math.random() * (vto - vfrom) + vfrom);  
+       }
+		function doit(){
+			var newdiv = document.createElement("div");
+			newdiv.style.position = 'absolute';
+			newdiv.style.left = random_number(0,1200)+"px";
+			newdiv.style.top = random_number(0,600)+"px";
+			var c = "rgba("+random_number(0,255)+","+random_number(0,255)+","+random_number(0,255)+","+(Math.random())+")";
+			newdiv.style.backgroundColor =c;
+			newdiv.style.padding="5px";
+			newdiv.style.borderRadius="50%";
+			newdiv.style.width=random_number(10,200)+"px";
+			newdiv.style.height=random_number(10,200)+"px";
+			newdiv.innerHTML = r;
+			r++;
+			document.body.appendChild(newdiv);
+		}
+
+		setInterval("doit()",100);
+
+	</script>
+</body>
+</html>
+

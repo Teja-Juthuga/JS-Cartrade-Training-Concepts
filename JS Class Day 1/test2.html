@@ -1,0 +1,64 @@
+<script>
+
+	a = 10;
+	b = 10;
+	c = a+b;
+
+	document.write(c);
+
+	// simple interest
+	//i = ptr/100;
+	//p*t*r/100
+	p = 100000;
+	t = 1;
+	r = 12;
+
+	i = p*t*r/100;
+
+	document.write("<BR>");
+	document.write(i);
+
+	for(i=0;i<10;i++){
+		document.write("<BR>" + i);
+	}
+	i=0;
+	while(i<10){
+		document.write("<BR>" + i);
+		i++;
+	}
+	i = 0;
+	do{
+		document.write("<BR>" + i);
+		i++;
+	}while(i<10);
+
+	if(a < b ){
+		document.write("<BR> b is big");
+	}else{
+		document.write("<BR> a is big");
+	}
+
+	// a , b, c, 
+	/* */
+
+	if(a > b && a > c ){
+		document.write("<BR> a is big");
+	}else if( b > c ){
+		document.write("<BR> b is big");
+	}else{
+		document.write("<BR> c is big");
+	}
+
+	//switch
+
+	 //function declartion
+	function dosomething(){
+		document.write("<BR> i did something !");
+	}
+
+	dosomething();
+
+	//function expression
+	
+
+</script>

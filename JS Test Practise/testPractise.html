@@ -1,0 +1,106 @@
+<script > 
+var data = [
+	{
+		"id": "08",
+		"name": "Naresh",
+		"manager_id": "07", 
+		"designation": "Tester"
+	},
+	{
+		"id": "01",
+		"name": "Satish",
+		"manager_id": false, // means he is top
+		"designation": "Manager"
+	},
+	{
+		"id": "02",
+		"name": "Apparao",
+		"manager_id": "01", 
+		"designation": "Accountant"
+	},
+	{
+		"id": "03",
+		"name": "Subbarao",
+		"manager_id": "01", 
+		"designation": "Office Admin"
+	},
+	{
+		"id": "04",
+		"name": "Chandrarao",
+		"manager_id": "02", 
+		"designation": "Office Boy"
+	},
+	{
+		"id": "05",
+		"name": "AppalaRaju",
+		"manager_id": "02", 
+		"designation": "Office Boy"
+	},
+	{
+		"id": "06",
+		"name": "Raju",
+		"manager_id": "03", 
+		"designation": "Team Lead"
+	},
+	{
+		"id": "07",
+		"name": "Suresh",
+		"manager_id": "06", 
+		"designation": "Software Developer"
+	},
+
+];
+
+/*document.write("<ul>") ;
+for (level1 in data ){
+	if (data[level1]["manager_id"] == false){
+		document.write("<li>") ; 
+		document.write("<div>" + data[level1]["name"] + " : " + data[level1]["designation"]) + "</div>";
+		document.write("<ul>") ; 
+		for (level2 in data){
+			if (data[level2]["manager_id"] == data[level1]["id"] ){
+				document.write("<li>") ;
+				document.write("<div>" + data[level2]["name"] + " : " + data[level2]["designation"] + "</div>") ; 
+				document.write("<ul>") ; 
+				for (level3 in data) {
+					if (data[level3]["manager_id"] == data[level2]["id"]){
+						document.write("<li>") ; 
+						document.write("<div>" + data[level3]["name"] + " : " + data[level3]["designation"] + "</div>") 
+						document.write("<ul>") ; 
+						for (level4 in data) {
+							if (data[level4]["manager_id"] == data[level3]["id"]) {
+								document.write("<li>") ; 
+								document.write("<div>" + data[level4]["name"] + " : " + data[level4]["designation"] + "</div>");
+								document.write("</li>") ; 
+							}
+						}
+						document.write("</ul>") ; 
+						document.write("</li>") ;
+					}
+				}
+				document.write("</ul>") ; 
+				document.write("</li>") ; 
+			}
+		}
+		document.write("</ul>") ;
+		document.write("</li>") ; 
+	}
+} 
+document.write("</ul>") ; */
+
+
+function emp_tree(manage_id){
+	document.write("<ul>") ;
+		for (i in data){
+			if (data[i]["manager_id"] == manage_id){
+				document.write("<li>") ;
+				document.write(data[i]["name"] + " : " + data[i]["designation"]) ; 
+				emp_tree(data[i]["id"]) ; 
+				document.write("</li>") ;			
+			}
+		}
+	document.write("</ul>") ; 
+}
+
+emp_tree(false)
+</script>

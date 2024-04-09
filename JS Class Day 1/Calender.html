@@ -1,0 +1,25 @@
+<html>
+<head><title></title></head>
+<body>
+<script> 
+
+		document.write("<table border=1 cellspacing= 0 cellpadding = 10>") ;
+		let days = ["Mon", "Tues", "Wednes", "Thurs", "Fri", "Satur" , "Sun"] ;
+		document.write("<tr>") ;
+
+		for (let i in days) {
+			document.write("<th>" + days[i] + "</th>") ; 
+		}
+		document.write("</tr> <tr>") ;
+		for (a=1 ; a <= 31 ;a++ ) {
+			document.write("<td>" + a + "</td>")
+			if (a % 7 == 0 ) {
+				document.write("</tr>")  ; 
+			}
+		} 
+		document.write("</tr>") ; 
+		document.write("</table>") ;
+
+</script>
+</body>
+</html>

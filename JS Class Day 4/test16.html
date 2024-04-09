@@ -1,0 +1,35 @@
+<script>
+
+var str = "W3Schools is optimized for learning, testing, and training. Examples might be simplified to improve reading and basic understanding. Tutorials, references, and examples are constantly reviewed to avoid errors, but we cannot warrant full correctness of all content. While using this site, you agree to have read and accepted our terms of use, cookie and privacy policy. ";
+
+str = str + str;
+
+str = str.split(" ");
+var alphabets = {};
+
+for(i=0;i<str.length;i++){
+	//document.write("<div>" + str[i] + "</div>");
+	if( str[i].toLowerCase() in alphabets ){
+		alphabets[ str[i].toLowerCase() ]++;
+	}else{
+		alphabets[ str[i].toLowerCase() ] = 1;
+	}
+}
+
+console.log( alphabets );
+
+var keys = Object.keys(alphabets);
+
+console.log( keys );
+
+keys.sort();
+
+for(var i=0;i<keys.length;i++){
+	document.write("<div>" + keys[i] + ": " + alphabets[ keys[i] ] + "</div>");
+}
+
+// for(var i in alphabets ){
+// 	document.write("<div>" + i + ": " + alphabets[i] + "</div>");
+// }
+
+</script>

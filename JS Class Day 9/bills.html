@@ -1,0 +1,292 @@
+<html>
+<head>
+<title>Bills</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+</head>
+<body>
+<div>
+	<div><input class="btn btn-primary btn-sm" type="button" value="Add Bill"  class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add_bill_popup"></div>
+	<table class="table table-bordered table-sm">
+		<tr>
+			<td>ID</td>
+			<td>Date</td>
+			<td>Customer</td>
+			<td>Amount</td>
+			<td></td>
+		</tr>
+		<tbody id="bills_list">
+		</tbody>
+	</table>
+</div>
+
+<div  class="modal modal-lg fade" id="add_bill_popup" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Bill</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <table>
+				<tr>
+					<td>Bill ID</td><td>Date</td><td>Customer Name</td><td>GST</td>
+				</tr>
+				<tr>
+					<td><input class="form-control form-control-sm" type="text" id="new_bill_id"></td>
+					<td><input class="form-control form-control-sm" type="date" id="new_bill_date"></td>
+					<td><input class="form-control form-control-sm" type="text" id="new_bill_cust"></td>
+					<td><input class="form-control form-control-sm" type="text" id="new_bill_gst"></td>
+				</tr>
+	  		</table>
+			<div>&nbsp;</div>
+			<table class="table table-bordered table-sm">
+				<tr>
+					<td>S.no.</td><td>Product</td><td>Qty</td><td>Price</td><td>Total</td><td>Tax</td><td>Net</td>
+				</tr>
+				<tbody id="new_bill_items_list">
+				</tbody>
+				<tr>
+					<td>#</td>
+					<td><select class="form-select form-select-sm" id="new_bill_item_product_id" onchange="new_bill_item_product_change()">
+						
+					</select></td>
+					<td><input class="form-control form-control-sm" type="number" id="new_bill_item_qty" value="1" onchange="new_bill_item_qty_change()" ></td>
+					<td><input class="form-control form-control-sm" type="number" id="new_bill_item_price" ></td>
+					<td id="new_bill_item_total">0</td>
+					<td id="new_bill_item_tax">0</td>
+					<td id="new_bill_item_net">0</td>
+					<td><input type="button" class="btn btn-primary btn-sm" value="+" onclick="new_bill_add()" ></td>
+				</tr>
+			</table>
+			<div>Total Amount: <span id="new_bill_total_amount" >0/-</span></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="save_bill()">SAVE Bill</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+
+products = 
+[
+
+	{
+		"id": "p1", 
+		"name": "Computer",
+		"price": 45000,
+		"tax": 6
+	},
+	{
+		"id": "p2", 
+		"name": "Air Conditioner",
+		"price": 25000,
+		"tax": 12
+	},
+	{
+		"id": "p3", 
+		"name": "Refridgerator",
+		"price": 12000,
+		"tax": 18
+	},
+	{
+		"id": "p4", 
+		"name": "Printer",
+		"price": 4500,
+		"tax": 6
+	},
+	{
+		"id": "p5", 
+		"name": "Washing Machine",
+		"price": 6750,
+		"tax": 6
+	},
+	{
+		"id": "p6", 
+		"name": "Remote Car",
+		"price": 950,
+		"tax": 2
+	},
+];
+
+bills = [
+	{
+		"bill_id": "",
+		"date": "",
+		"gst": "",
+		"customer_name":"",
+		"amount": ,
+		"items": [
+			{
+				"product_id": "",
+				"qty": 3,
+				"price": 50,
+				"total": 150,
+				"tax": 0.5,
+				"net": 150+(150*0.5)
+			}
+		]
+	}
+];
+
+new_bill_items = [];
+
+function generate_bills_list(){
+	vstr = "";
+	for(var i=0;i<bills.length;i++){
+		vstr = vstr + "<tr>";
+		vstr = vstr + "<td>"+bills[i]['bill_id'] + "</td>";
+		vstr = vstr + "<td>"+bills[i]['date'] + "</td>";
+		vstr = vstr + "<td>Customer: "+bills[i]['customer_name'] + "<BR>GST: " + bills[i]['gst'] + "</td>";
+		vstr = vstr + "<td>"+bills[i]['amount'] + "</td>";
+		vstr = vstr + `<td><input type="button" value="E" ><input type="button" value="X" ></td>`;
+		vstr = vstr + "</tr>";
+	}
+	document.getElementById("bills_list").innerHTML = vstr;	
+}
+
+function show_add_bill(){
+
+}
+
+function generate_product_dropdown(){
+	var vstr = "<option value=''>Select Item</option>";
+	for(var i=0;i<products.length;i++){
+		vstr = vstr + "<option value='" + products[i]['id'] + "' >" + products[i]['name'] + "</option>";
+	}
+	document.getElementById("new_bill_item_product_id").innerHTML = vstr;
+}
+
+function new_bill_item_product_change(){
+	var pid = document.getElementById("new_bill_item_product_id").value;
+	for(var i=0;i<products.length;i++){
+		if( products[i]['id'] == pid ){
+			console.log(pid)
+			document.getElementById("new_bill_item_price").value = products[i]['price'];
+			document.getElementById("new_bill_item_tax").innerHTML = products[i]['tax'] + "%";
+			var qty = Number(document.getElementById("new_bill_item_qty").value);
+			var tot= products[i]['price'] * qty;
+			document.getElementById("new_bill_item_total").innerHTML = tot;
+			document.getElementById("new_bill_item_net").innerHTML = tot + (tot * products[i]['tax']/100);
+		}
+	}
+}
+function new_bill_item_qty_change(){
+			var price = Number(document.getElementById("new_bill_item_price").value);
+			var tax = Number(document.getElementById("new_bill_item_tax").innerHTML.replace("%",""));
+			var qty = Number(document.getElementById("new_bill_item_qty").value);
+			var tot= price * qty;
+			document.getElementById("new_bill_item_total").innerHTML = tot;
+			document.getElementById("new_bill_item_net").innerHTML = tot + (tot * tax/100);
+}
+
+function new_bill_add(){
+	
+	var product_id = document.getElementById("new_bill_item_product_id").value;
+	var price = Number(document.getElementById("new_bill_item_price").value);
+	var tax = Number(document.getElementById("new_bill_item_tax").innerHTML.replace("%",""));
+	var qty = Number(document.getElementById("new_bill_item_qty").value);
+	if( qty < 1 ){
+		alert("Please enter Quantity");
+		return false;
+	}
+	if( product_id == "" ){
+		alert("Please select product");
+		return false;	
+	}
+	var tot= price * qty;
+	var net = tot + (tot*tax/100);
+
+	new_bill_items.push({
+		"product_id": product_id,
+		"qty": qty,
+		"price": price,
+		"tax": tax,
+		"total": tot,
+		"net": net,
+	});
+
+	console.log( new_bill_items );
+	generate_new_bill_items_list();
+
+	document.getElementById("new_bill_item_product_id").value = "";
+	document.getElementById("new_bill_item_price").value = 0;
+	document.getElementById("new_bill_item_tax").innerHTML = "0%";
+	document.getElementById("new_bill_item_total").innerHTML = "0";
+	document.getElementById("new_bill_item_net").innerHTML = "0";
+	document.getElementById("new_bill_item_qty").value = 0;
+
+}
+function generate_new_bill_items_list(){
+	var vstr = "";
+	var total = 0;
+	for(var i=0;i<new_bill_items.length;i++){
+		vstr = vstr + "<tr>";
+		vstr = vstr + "<td>" + (i+1) + "</td>";
+		vstr = vstr + "<td>" + get_product_name( new_bill_items[i]['product_id'] ) + "</td>";
+		vstr = vstr + "<td>" + new_bill_items[i]['qty'] + "</td>";
+		vstr = vstr + "<td>" + new_bill_items[i]['price'] + "</td>";
+		vstr = vstr + "<td>" + new_bill_items[i]['total'] + "</td>";
+		vstr = vstr + "<td>" + new_bill_items[i]['tax'] + "</td>";
+		vstr = vstr + "<td>" + new_bill_items[i]['net'] + "</td>";
+		vstr = vstr + `<td><input type="button" value="X" class="btn btn-danger btn-sm" onclick="new_bill_item_delete(`+i+`)" ></td>`;
+		vstr = vstr + "</tr>";
+		total = total + new_bill_items[i]['net'];
+	}
+	document.getElementById("new_bill_items_list").innerHTML = vstr;
+	document.getElementById("new_bill_total_amount").innerHTML = "Rs." + total + "/-";
+}
+function get_product_name(vid){
+	for(var i=0;i<products.length;i++){
+		if( products[i]['id'] == vid ){
+			return products[i]['name'];
+		}
+	}
+	return "NotFound";
+}
+function new_bill_item_delete(vi){
+	new_bill_items.splice(vi,1);
+	generate_new_bill_items_list();
+}
+
+function save_bill(){
+
+	var bill_id = document.getElementById('new_bill_id').value;
+	var date = document.getElementById('new_bill_date').value;
+	var cust = document.getElementById('new_bill_cust').value;
+	var gst = document.getElementById('new_bill_gst').value;
+
+	var amount = 0;
+	for(var i=0;i<new_bill_items.length;i++){
+		amount = amount + new_bill_items[i]['net'];
+	}
+
+	bills.push({
+		"bill_id": bill_id,
+		"date": date,
+		"customer_name": cust,
+		"gst": gst,
+		"amount": amount,
+		"items": new_bill_items
+	});
+	generate_bills_list();
+	myModal.hide();
+}
+
+generate_bills_list();
+generate_product_dropdown();
+
+const myModal = new bootstrap.Modal('#add_bill_popup', {
+  keyboard: false
+})
+generate_product_dropdown()
+myModal.show();
+
+</script>
+</body>
+</html>
+

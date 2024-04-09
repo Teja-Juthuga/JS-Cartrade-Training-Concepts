@@ -1,0 +1,20 @@
+<script src="action_log.js"></script>
+<script>
+
+methods = {};
+
+for(var i=0;i<data.length;i++){
+	if( data[i]['method'] in methods == false ){
+		methods[ data[i]['method'] ] = 1;
+	}else{
+		methods[ data[i]['method'] ] += 1;
+		// methods[ data[i]['method'] ] = methods[ data[i]['method'] ] + 1;
+		// methods[ data[i]['method'] ]++; 
+	}
+}
+
+document.write( JSON.stringify(methods,null,4) );
+document.write( methods );
+console.log( methods );
+
+</script>

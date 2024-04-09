@@ -1,0 +1,18 @@
+<script>
+
+for(table=1;table<=20;table++){
+	document.write("<table border='1' cellspacing='0' cellpadding='5' style='float:left;margin:5px;'>");
+	for(factor=1;factor<=20;factor++){
+		if( factor == 10 ){
+			document.write("<tr bgcolor='red'>");
+		}else{
+			document.write("<tr>");
+		}
+		document.write("<td>"+table+"</td><td>X</td><td>"+factor+"</td><td>=</td><td>"+ (table*factor) + "</td></tr>" );
+		document.write("</tr>");
+	}
+	document.write("</table>");
+
+}
+
+</script>

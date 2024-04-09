@@ -1,0 +1,109 @@
+<html>
+<body>
+<style>
+	a { text-decoration: none; }
+	.menubar{ height: 30px; border-bottom: 1px solid orange; }
+	.menuitem{ 
+		float:left; 
+		padding:0px 10px; 
+		border-top:1px solid red;
+		border-left:1px solid red;
+		border-right:1px solid red; 
+		margin-left:10px; 
+		height: 30px; 
+		line-height: 30px; 
+	}
+	.submenubar{ 
+		display: none;
+		position: absolute; 
+		padding: 10px; 
+		border: 1px solid red; 
+		border-top: 1px solid black;
+		background-color: black;
+		margin-left: -11px;
+	}
+	.submenubar a{ color:white; }
+	.menuitem:hover{ border-bottom:1px solid white; background-color:black; color:white; }
+	.menuitem:hover a{ color:white; }
+	.menuitem:hover .submenubar{display: block;}
+</style>
+<script>
+
+menus = {
+	"home": {
+		"label": "Home",
+		"link": "/",
+		"submenu": false,
+	},
+	"usedcars": {
+		"label": "Stop Watch",
+		"link": "Stop_watch.html",
+		"submenu": true,
+		"submenu_items": [
+			{
+				"label": "Buy a used car",
+				"link": "/usedcars/buy"
+			},
+			{
+				"label": "Sell a used car",
+				"link": "/usedcars/sell"
+			},
+			{
+				"label": "Class",
+				"link": "test7.html"
+			}
+		]
+	},
+	"newcars": {
+		"label": "New Cars",
+		"link": "/newcars",
+		"submenu": true,
+		"submenu_items": [
+			{
+				"label": "Buy a NEW car",
+				"link": "/newcars/buy"
+			},
+			{
+				"label": "Expert car reviews",
+				"link": "/newcars/reviews"
+			},
+			{
+				"label": "Car Loan",
+				"link": "/newcars/loan"
+			},
+			{
+				"label": "Car Insurance",
+				"link": "/newcars/insurance"
+			}
+		]
+	},
+};
+
+document.write("<div class='menubar' >");
+for(menu in menus){
+	document.write("<div class='menuitem' >");
+	document.write("<a href=\"" + menus[ menu ]['link'] + "\">" + menus[ menu ]['label'] + "</a>" );
+	if( menus[menu]['submenu'] == true ){
+		document.write("<div class='submenubar' >");
+		for(menuindex=0;menuindex<menus[ menu ]['submenu_items'].length;menuindex++){
+			document.write("<div class='submenuitem' >");
+			document.write("<a href=\"" + menus[ menu ]['submenu_items'][ menuindex ]['link'] + "\">" + menus[ menu ]['submenu_items'][ menuindex ]['label'] + "</a>" );
+			document.write("</div>");
+		}
+		document.write("</div>");
+	}
+	document.write("</div>");
+}
+document.write("</div>");
+
+
+s = "Raju says \"He is good\"\n\r\t";
+
+json = "{\
+	\"name\": \"satish\"\
+}";
+
+</script>
+<p>skldf sf sdf sdfs </p><p>sd sdfsdf dsfdsfdsf dsfsdfsdf sdskldf sf sdf sdfs </p><p>skldf sf sdf sdfs </p><p>skldf sf sdf sdfs </p><p>skldf sf sdf sdfs </p><p>skldf sf sdf sdfs </p><p>skldf sf sdf sdfs </p><p>skldf sf sdf sdfs </p><p>skldf sf sdf sdfs </p><p>skldf sf sdf sdfs </p><p>skldf sf sdf sdfs </p><p>skldf sf sdf sdfs </p><p>skldf sf sdf sdfs </p><p>skldf sf sdf sdfs </p><p>skldf sf sdf sdfs </p><p>skldf sf sdf sdfs </p><p>skldf sf sdf sdfs </p><p>skldf sf sdf sdfs </p><p>skldf sf sdf sdfs </p><p>skldf sf sdf sdfs </p><p>skldf sf sdf sdfs </p><p>skldf sf sdf sdfs </p>
+</body>
+</html>

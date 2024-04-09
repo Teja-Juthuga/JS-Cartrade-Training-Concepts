@@ -1,0 +1,70 @@
+<script>
+var data = [
+	{
+		"id": "08",
+		"name": "Naresh",
+		"manager_id": "07", 
+		"designation": "Tester"
+	},
+	{
+		"id": "01",
+		"name": "Satish",
+		"manager_id": false, // means he is top
+		"designation": "Manager"
+	},
+	{
+		"id": "02",
+		"name": "Apparao",
+		"manager_id": "01", 
+		"designation": "Accountant"
+	},
+	{
+		"id": "03",
+		"name": "Subbarao",
+		"manager_id": "01", 
+		"designation": "Office Admin"
+	},
+	{
+		"id": "04",
+		"name": "Chandrarao",
+		"manager_id": "02", 
+		"designation": "Office Boy"
+	},
+	{
+		"id": "05",
+		"name": "AppalaRaju",
+		"manager_id": "02", 
+		"designation": "Office Boy"
+	},
+	{
+		"id": "06",
+		"name": "Raju",
+		"manager_id": "03", 
+		"designation": "Team Lead"
+	},
+	{
+		"id": "07",
+		"name": "Suresh",
+		"manager_id": "06", 
+		"designation": "Software Developer"
+	},
+
+];
+
+
+function print_tree( manager_id ){
+	document.write("<ul>");
+	for(var i=0;i<data.length;i++){
+		if( data[i]['manager_id'] == manager_id ){
+			document.write("<li>");
+			document.write(data[i]['name'] + ": " + data[i]['designation']);
+			print_tree( data[i]['id'] );
+			document.write("</li>");
+		}
+	}
+	document.write("</ul>");
+} 
+
+print_tree( false );
+
+</script>

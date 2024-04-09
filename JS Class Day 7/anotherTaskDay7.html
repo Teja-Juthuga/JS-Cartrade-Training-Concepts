@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+</head>
+<body>
+
+	<table border=0 cellspacing=0 cellpadding=5>
+		<thead>
+			<tr>
+				<th>Manager Name</th> <th>Name</th> <th>Designation</th>
+			</tr>
+		</thead>
+		<tbody id="empList"></tbody>
+		<tr>
+				<td><input type="text" id="id"></td>
+				<td><input type="text" id="empName"></td>
+				<td><input type="text" id="Designation"></td>
+				<td><input type="button" value="Add" onclick="addEmp()"></td>
+		</tr>
+	</table>
+
+<script>
+
+	var data = [
+    {
+        "id": "08",
+        "name": "Naresh",
+        "manager_id": "07", 
+        "designation": "Tester"
+    },
+    {
+        "id": "01",
+        "name": "Arjun",
+        "manager_id": false,
+        "designation": "General Manager"
+    },
+    {
+        "id": "02",
+        "name": "varaprasad",
+        "manager_id": "01", 
+        "designation": "Accountant"
+    },
+    {
+        "id": "03",
+        "name": "somaraju",
+        "manager_id": "01", 
+        "designation": "Office Admin"
+    },
+    {
+        "id": "04",
+        "name": "saiprasad",
+        "manager_id": "06", 
+        "designation": "Developer"
+    },
+    {
+        "id": "05",
+        "name": "surya",
+        "manager_id": "06", 
+        "designation": "Developer"
+    },
+    {
+        "id": "06",
+        "name": "srinu",
+        "manager_id": "03", 
+        "designation": "Team Lead"
+    },
+    {
+        "id": "08",
+        "name": "phani",
+        "manager_id": "07", 
+        "designation": "Software Developer"
+    },
+    {
+        "id": "07",
+        "name": "subbu",
+        "manager_id": "05", 
+        "designation": "Software Developer"
+    },
+];
+
+function display() {
+	let str = "<table>" ; 
+	for (var i=0 ; i<data.length ; i++ ){
+		str += "<tr>" ; 
+		str += "<td>" + data[i]['id'] + "</td>" ; 
+		for (i in data){
+			
+		}
+		str += "<td>" + data[i]['name'] + "</td>" ; 
+		str += "<td>" + data[i]['designation'] + "</td>" ;
+		str += "<td><input type ='button' value = 'Edit' onclick = 'edit(" + i + ")'> <input type = 'button' value = 'Delete' onclick = 'del()'>"
+		str += "</tr>" ;  
+	}
+	str += "</table>"
+	document.getElementById("empList").innerHTML = str ;
+}
+display()
+</script>
+</body>
+</html>

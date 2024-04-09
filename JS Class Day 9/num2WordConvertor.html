@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Number to Word Convertor</title>
+</head>
+<body>
+<table>
+<h1 style="text-align: center;">Number to Word Convertor</h1>
+<div style="text-align: center;">
+	<tr><td>Enter Number: </td><td><input type="text" id="numInput"></td><td><input type="button" onclick="convert()" value="Convert"></td></tr>
+</div>
+</table>	
+<h3 id="output"></h3>
+<script>
+let inputNum = document.getElementById('numInput') ; 
+let outputEl = document.getElementById("output") ; 
+
+
+function convert() {
+	let integer_str = inputNum.value ;
+	let res = number_to_string(integer_str) ; 
+	outputEl.innerHTML = res ; 
+
+}
+
+function number_to_string(n){
+
+	var ones = {
+	 0: "",
+	 1: "One",
+	 2: "Two",
+	 3: "Three",
+	 4: "Four",
+	 5: "Five",
+	 6: "Six",
+	 7: "Seven",
+	 8: "Eight",
+	 9: "Nine",
+	}
+
+	var tens = {
+	 10: "Ten",
+	 11: "Eleven",
+	 12: "Twelve",
+	 13: "Thirteen",
+	 14: "Fourteen",
+	 15: "Fifteen",
+	 16: "Sixteen",
+	 17: "Seventeen",
+	 18: "Eighteen",
+	 19: "Nineteen" 
+	}
+
+	var prefixes = {
+	1: "Ten",
+	 2: "Twenty",
+	 3: "Thirty",
+	 4: "Forty",
+	 5: "Fifty",
+	 6: "Sixty",
+	 7: "Seventy",
+	 8: "Eighty",
+	 9: "Ninety"
+	}
+
+	function get_word( n ){
+		console.log("Get word: " + n );
+		var str = "";
+		if( n >= 11 && n <= 19 ){
+			str = tens[ n ];
+		}else{
+			var n1 = n%10;
+			var n2 = parseInt(n/10);
+			console.log( n1 );
+			console.log( n2 );
+			if( n2 >= 1 ){
+				str = str + prefixes[n2] + " ";
+			}
+			if( n1 >=1 ){
+				str = str + " "+ ones[n1];
+			}
+		}
+		console.log( str );
+		return str;
+	}
+
+	var str = "";
+
+	var n1 = n%100;
+	str = get_word( n1 ) + " " + str;
+	n = parseInt(n/100);
+
+	if( n >= 1 ){
+		n1 = n%10;
+		if( n1 >= 1 ){
+			str = ones[ n1 ] + " Hundred " + str;
+		}else{
+
+		}
+		n = parseInt(n/10);
+	}
+	if( n >= 1 ){
+		n1 = n%100;
+		if( n1 >= 1 ){
+			str = get_word(n1) + " Thousand " + str;
+		}
+		n = parseInt(n/100);
+	}
+	if( n >= 1 ){
+		n1 = n%100;
+		str = get_word(n1) + " Lakh " + str;
+		n = parseInt(n/100);
+	}
+	if( n >= 1 ){
+		n1 = n%100;
+		str = get_word(n1) + " Crores " + str;
+		n = parseInt(n/100);
+	}
+
+	return str;
+}
+
+</script>
+</body>
+</html>

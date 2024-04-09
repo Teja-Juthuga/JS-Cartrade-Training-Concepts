@@ -1,0 +1,67 @@
+<html>
+<head>
+	<title>JavaScript Practise	</title>
+	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<style type="text/css">
+	
+.card{
+	height: 450px;
+	width: 350px; 
+	background-color: black;	
+	text-align: center;
+	margin-left: 20px;
+	border-radius: 10px;
+}
+
+img{
+	padding: 20px;
+	height: 250px;
+	width: 250px;
+
+}
+
+
+</style>
+
+
+<script type="text/javascript">  
+function time() {
+	document.getElementById("demoPara").textContent = Date() ;
+}
+
+
+
+function bulbOn(){
+	document.getElementById("bulb").src = "https://res.cloudinary.com/dcsn3ivw4/image/upload/v1662786620/pic_bulbon_mrdktm.gif" ; 
+}
+function bulbOff(){
+	document.getElementById("bulb").src = "https://res.cloudinary.com/dcsn3ivw4/image/upload/v1662786645/pic_bulboff_m0uchu.gif" ; 
+}
+
+
+</script>
+
+
+	<button onclick= "time()">Click me to see Date and Time</button>
+	<p id="demoPara"></p>
+	<br><br><br>
+	<div class="card d-flex flex-colum justify-content-center">
+		<img id="bulb" src="https://res.cloudinary.com/dcsn3ivw4/image/upload/v1662786645/pic_bulboff_m0uchu.gif">
+		<br>
+		<button class="btn btn-primary " onclick= "document.getElementById('bulb').src = 'https://res.cloudinary.com/dcsn3ivw4/image/upload/v1662786620/pic_bulbon_mrdktm.gif' "> Click to Turn on Bulb </button>
+		<br>
+		<button class="btn btn-primary " onclick = "document.getElementById('bulb').src = 'https://res.cloudinary.com/dcsn3ivw4/image/upload/v1662786645/pic_bulboff_m0uchu.gif' " > Click to Turn off Bulb </button>
+
+
+	</div>
+<script> 
+	console.log("Hello World!!!")
+	document.write("Hello World!!!!!")
+</script>
+	
+
+
+</body>
+</html>

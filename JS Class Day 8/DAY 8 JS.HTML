@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+</head>
+<body> 
+	<div>
+		<input id="taskInput" type="text" name=""><br><br>
+		<input type="button" value="Add" name="add" onclick="add()"><br><br>
+	</div>
+	<div>
+	</div>
+		<div id="outputTask"></div>
+<script>
+let arr = [
+{
+	task : "Learn HTML",
+},
+{
+	task : "Learn CSS",	
+}
+] 
+let task = document.getElementById("taskInput") ;
+function display(){
+	var str = "<table border=1 cellpadding=5 cellspacing=0>" ;
+	for (let i=0 ; i < arr.length ;i++) {
+		str += "<tr><td>" ; 
+		str += arr[i]["task"] + "</td>" ;
+		str += "<td><input type=\"button\" value=\"X\" onclick=\"delete_task("+i+")\" ></td></tr></table>";
+	}
+		document.getElementById("outputTask").innerHTML = str ;
+}
+function add() {
+	arr.push({
+		task : task.value ,  
+	})
+	task.value = "" ;
+	console.log(arr)
+	display()
+}
+display()
+</script>
+</body>
+</html>

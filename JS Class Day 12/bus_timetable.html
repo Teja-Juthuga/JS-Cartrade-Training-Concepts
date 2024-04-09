@@ -1,0 +1,267 @@
+<html>
+<body>
+<script src="buses.js" ></script>
+<div>Find Buses</div>
+<div>
+	<select id="find_from_station" ></select>
+	<select id="find_to_station" ></select>
+	<input type="button" value="Find" onclick="find_buses()" >
+</div>
+<table>
+	<tbody id="available_list" >
+	</tbody>
+</table>
+
+<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
+
+<div>Add Bus</div>
+<table>
+	<tr>
+		<td>ID</td>
+		<td>Type</td>
+		<td>From</td>
+		<td>To</td>
+		<td>Distance</td>
+		<td>Dept</td>
+		<td>Arri</td>
+		<td>Price</td>
+		<td></td>
+	</tr>
+	<tbody id="bus_list" >
+	</tbody>
+	<tr>
+		<td><input type="text" id="new_bus_id" style="width:100px;" value="001" ></td>
+		<td><select id="new_bus_type" ></select></td>
+		<td><select id="new_bus_from" onchange="new_bus_from_change()" ></select></td>
+		<td><select id="new_bus_to" ></select></td>
+		<td><input type="text" id="new_bus_dist" style="width:50px;" value="300" >km</td>
+		<td><input type="text" id="new_bus_dept" style="width:100px;" value="10:10am" ></td>
+		<td><input type="text" id="new_bus_arri" style="width:100px;" value="12:30pm" ></td>
+		<td><input type="number" id="new_bus_price" style="width:50px;" value="20" ></td>
+		<td><input type="button" value="+" onclick="add_bus()" ></td>
+	</tr>
+</table>
+<pre id="bus_list_json" ></!>
+<script>
+
+types = [
+	{
+		"type": "Delux",
+	},
+	{
+		"type": "Luxury",
+	},
+	{
+		"type": "NonStop",
+	},
+	{
+		"type": "NonStopAC",
+	}
+]
+
+stations = [
+	{
+		"id": "01",
+		"city": "Kakinada",
+	},
+	{
+		"id": "02",
+		"city": "Vijayawada",
+	},
+	{
+		"id": "03",
+		"city": "Visakapatnam",
+	},
+	{
+		"id": "04",
+		"city": "Khammam",
+	},
+	{
+		"id": "05",
+		"city": "Eluru",
+	},
+	{
+		"id": "06",
+		"city": "Tirupati",
+	},
+	{
+		"id": "07",
+		"city": "Nellore",
+	},
+	{
+		"id": "08",
+		"city": "Bheemavaram",
+	},
+	{
+		"id": "09",
+		"city": "Razole",
+	},
+	{
+		"id": "10",
+		"city": "Amalapuram",
+	},
+	{
+		"id": "11",
+		"city": "Ravulapalem",
+	},
+	{
+		"id": "12",
+		"city": "Mandapeta",
+	},	
+];
+
+function generate_bus_list(){
+	vstr = "";
+	for(var i=0;i<buses.length;i++){
+		vstr = vstr + "<tr>";
+		vstr = vstr + "<td>" + buses[i]['id'] + "</td>";
+		vstr = vstr + "<td>" + buses[i]['type'] + "</td>";
+		vstr = vstr + "<td>" + get_station_name( buses[i]['from_station'] ) + "</td>";
+		vstr = vstr + "<td>" + get_station_name( buses[i]['to_station'] ) + "</td>";
+		vstr = vstr + "<td>" + buses[i]['distance'] + "</td>";
+		vstr = vstr + "<td>" + buses[i]['dept'] + "</td>";
+		vstr = vstr + "<td>" + buses[i]['arri'] + "</td>";
+		vstr = vstr + "<td>" + buses[i]['price'] + "</td>";
+		vstr = vstr + `<td><input type="button" value="X" onclick="delete_bus()" ></td>`;
+		vstr = vstr + "</tr>";
+	}
+	document.getElementById("bus_list").innerHTML = vstr;
+	document.getElementById("bus_list_json").innerHTML = JSON.stringify(buses,null,4);
+}
+
+function get_station_name( vstation_id ){
+	for(var i=0;i<stations.length;i++){
+		if( stations[i]['id'] == vstation_id ){
+			return stations[i]['city'];
+		}
+	}
+	return "notfound";
+}
+
+function add_bus(){
+	id = document.getElementById("new_bus_id").value;
+	type = document.getElementById("new_bus_type").value;
+	from = document.getElementById("new_bus_from").value;
+	to = document.getElementById("new_bus_to").value;
+	dist = document.getElementById("new_bus_dist").value;
+	dept = document.getElementById("new_bus_dept").value;
+	arri = document.getElementById("new_bus_arri").value;
+	price = Number(document.getElementById("new_bus_price").value);
+
+	buses.push({
+		"id": id,
+		"type": type,
+		"from_station": from,
+		"to_station": to,
+		"distance": dist,
+		"dept": dept,
+		"arri": arri,
+		"price": price,	
+	});
+	generate_bus_list();
+}
+
+function generate_dropdowns(){
+	vstr = "<option value=''>Select Type</option>";
+	for(var i=0;i<types.length;i++){
+		vstr = vstr + "<option value='" + types[i]['type'] + "' >" + types[i]['type'] + "</option>";
+	}
+	document.getElementById("new_bus_type").innerHTML = vstr;
+
+	vstr = "<option value=''>Select Station</option>";
+	for(var i=0;i<stations.length;i++){
+		vstr = vstr + "<option value='" + stations[i]['id'] + "' >" + stations[i]['city'] + "</option>";
+	}
+	document.getElementById("new_bus_from").innerHTML = vstr;
+	document.getElementById("new_bus_to").innerHTML = vstr;
+	document.getElementById("find_from_station").innerHTML = vstr;
+	document.getElementById("find_to_station").innerHTML = vstr;
+}
+
+function new_bus_from_change(){
+	vfrom = document.getElementById("new_bus_from").value;
+	vto = document.getElementById("new_bus_to");
+	console.log( vto);
+	for(var i=0;i<vto.options.length;i++){
+		console.log( vto.options[i].value );
+		if( vto.options[i].value == vfrom ){
+			vto.options[i].disabled = true;
+		}else{
+			vto.options[i].disabled = false;
+		}
+	}
+}
+
+generate_dropdowns();
+/*
+function random_number(vfrom,vto){
+	return parseInt( Math.random() * (vto - vfrom) + vfrom );
+}
+
+
+for(var i=0;i<100;i++){
+
+	id = i+"00"+i;
+	type = types[ random_number(0,3) ]['type'];
+	from = stations[ random_number(0,11) ]['id'];
+	to = stations[ random_number(0,11) ]['id'];
+	if(from == to){
+		to = stations[ random_number(0,11) ]['id'];
+		if(from == to){
+			to = stations[ random_number(0,11) ]['id'];
+		}
+	}
+	dist = random_number(50,900);
+	dept = random_number(1,24) + ":" + random_number(1,60);
+	arri = random_number(1,24) + ":" + random_number(1,60);
+	price = random_number(5,300);
+
+	buses.push({
+		"id": id,
+		"type": type,
+		"from_station": from,
+		"to_station": to,
+		"distance": dist,
+		"dept": dept,
+		"arri": arri,
+		"price": price,	
+	});
+
+}
+*/
+
+var available_list = [];
+function find_buses(){
+	available_list = [];
+	vfrom = document.getElementById("find_from_station").value;
+	vto = document.getElementById("find_to_station").value;
+	for(var i=0;i<buses.length;i++){
+		if( buses[i]['from_station'] == vfrom && buses[i]['to_station'] == vto ){
+			available_list.push(buses[i]);
+		}
+	}
+	generate_available_list();
+}
+function generate_available_list(){
+	vstr = "";
+	for(var i=0;i<available_list.length;i++){
+		vstr = vstr + "<tr>";
+		vstr = vstr + "<td>" + available_list[i]['id'] + "</td>";
+		vstr = vstr + "<td>" + available_list[i]['type'] + "</td>";
+		vstr = vstr + "<td>" + get_station_name( available_list[i]['from_station'] ) + "</td>";
+		vstr = vstr + "<td>" + get_station_name( available_list[i]['to_station'] ) + "</td>";
+		vstr = vstr + "<td>" + available_list[i]['distance'] + "</td>";
+		vstr = vstr + "<td>" + available_list[i]['dept'] + "</td>";
+		vstr = vstr + "<td>" + available_list[i]['arri'] + "</td>";
+		vstr = vstr + "<td>" + available_list[i]['price'] + "</td>";
+		vstr = vstr + `<td><input type="button" value="X" onclick="delete_bus()" ></td>`;
+		vstr = vstr + "</tr>";
+	}
+	document.getElementById("available_list").innerHTML = vstr;
+}
+
+generate_bus_list();
+
+</script>
+</body>
+</html>

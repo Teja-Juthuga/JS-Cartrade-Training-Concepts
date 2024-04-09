@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+</head>
+<body>
+<style></style>
+<script>
+
+/*
+
+//1. Print all even numbers from 0 – 10
+
+for (let i = 1 ; i <= 10 ; i++) {
+	if ((i % 2) == 0) {
+		document.write(i + "<br>") ; 
+	}
+}
+
+*/
+
+/*
+// 2. Print a table containing multiplication tables 
+ 
+for(i = 1 ; i <= 12 ; i++){
+	document.write("<table border = 0 cellspacing = 0 cellpadding=5>") ;
+	for (j = 1 ; j <= 20 ; j++) {
+		document.write("<tr>") ; 
+		document.write("<td>"+ i +"</td><td> X </td><td>"+ j + "</td><td> = </td> <td>" + i * j +"</td>") ; 
+		document.write("</tr>");
+	}
+	document.write("</table> <br>")
+}
+*/ 
+ 
+/*
+
+// 3. Create a length converter function. 
+
+function convert_km_to_miles(kms) {
+	let miles = kms / 1.609 
+	return miles 
+}
+
+let x = convert_km_to_miles(20) 
+document.write(parseFloat(x).toFixed(2) )
+*/ 
+
+/*
+// 4. Calculate the sum of numbers within an array 
+let numArray = [ 1 , 2, 3, 4, 5] ; 
+let count = 0 ; 
+for(i in numArray){
+	count += numArray[i]
+}
+document.write(count)
+
+*/
+
+/*
+// 5. Create a function that reverses an array. 
+
+let arr = [ 1 , 2 , 3 , 4 , 5, 'Names', 'age', 'occupation'] ; 
+let length_arr = arr.length ; 
+let newArr = []
+for (i = length_arr ; i > 0 ; i--) {
+	newArr.push(arr[i - 1 ])
+}
+document.write(newArr)
+*/ 
+
+// 6. Sort an array from lowest to highest 
+
+let numArray = [ 254 , 45, 22757, 787, 25425,  54, 4 , 1 ]
+numArray.sort();
+document.write(numArray) ; 
+</script>
+</body>
+</html>

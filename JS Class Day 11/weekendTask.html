@@ -1,0 +1,390 @@
+<html>
+<head> 
+
+	<title> Bus Ticket Booking </title> 
+  	<link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+  	<script src="../bootstrap/js/bootstrap.min.js"></script>
+
+  </head>
+<body>
+<style>
+.card{
+	text-align: center;
+}
+</style>
+
+<div class="container mt-5">		
+	<div class="card">
+		<h3>Plan Your Journey </h3>
+		<table class="table table-bordered ">
+			<tr><th>From Location</th><th>To Location</th><th></th></tr>
+			<tr><td><input type="text" id="from_location"></td>
+				<td><input type="text" id="to_location"></td>
+				<td><input type="button" value="Find Buses" onclick="show_buses_list()"></td>
+			</tr>
+			
+		</table>
+		<table style="display: none;" class="table table-bordered" id="output">
+			<tr>
+				<th>Bus Name </th>
+				<th>Boarding Time & Location</th>
+				<th>Arraival Time & Location</th>
+				<th>Price </th>
+				<th>Book Here </th>
+			</tr>
+			<tbody id="buses_list"></tbody>
+			<h4 id="error_msg" style="text-align: center; display: none;">No Buses Found</h4>
+		</table>
+	</div>
+</div>
+
+<div class="modal modal-xl fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel"> Book Your Tickets Here </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      	<table class="table table-bordered">
+      		<tr>
+      			<th>Bus Name </th>
+      			<th>Boarding time & Location </th>
+      			<th>Arraival time & Location </th>
+      			<th>Price (in Rs.)</th>
+      		</tr>
+      		<tr>
+      			<td id="show_bus_name_popup"></td>
+      			<td id="show_bus_boarding_time_popup"></td>
+      			<td id="show_bus_arraival_time_popup"></td>
+      			<td id="show_bus_ticket_price_popup"></td>
+      		</tr>
+      	</table>
+	   		<table class="table table-bordered">
+	        	<tr>
+	        		<th>Enter Your Name</th>
+	        		<th>Enter Your Contact Number</th>
+	        		<th>Date of Journey</th>
+	        		<th>No. of Tickets</th>
+	        		<th></th>
+	        	</tr>
+	        	<tr>
+	        		<td><input type="text" id="customer_name"></td>
+	        		<td><input type="number" id="customer_num"></td>
+	        		<td><input type="Date" id="date_of_journey_input"></td>
+	        		<td><input type="number" id="total_tickets_input"></td>
+	        		<td><input onclick="review_deatils()" type="button" value="+" class="btn btn-primary"></td>
+	        	</tr>
+	        </table>
+	        <table id="journey_review_details" style="display:none;">
+	        	<tr>
+	        		<th>Name:</th>
+	        		<td id="user_name"></td>
+	        	</tr>
+	        	<tr>
+	        		<th>Contact Number:</th>
+	        		<td id="user_number"></td>
+	        	</tr>
+	        	<tr>
+	        		<th>Journey Details:</th>
+	        		<td id="journey_details"></td>
+	        	</tr>
+	        	<tr>
+	        		<th>Date of Journey:</th>
+	        		<td id="date_of_journey"></td>
+	        	</tr>
+	        	<tr>
+	        		<th>No. of tickets:</th>
+	        		<td id="total_tickets"></td>
+	        	</tr>
+	        	<tr>
+	        		<th>Ticket Price:</th>
+	        		<td id="ticket_price"></td>
+	        	</tr>
+	        	<tr>
+	        		<th>GST:</th>
+	        		<td id="GST"></td>
+	        	</tr>
+	        </table>
+	      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="confirmation()">Confirm Booking</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+	bus_data = 
+	[
+		{
+			"from" : "Kakinada",
+			"to"  : "Hyderabad" , 
+			"GST" : 5,
+			"bus_details" : 
+			[
+				{
+					"bus_id":1,
+					"bus_name" : "Orange Travels",
+					"description" : "Super Luxury (AC, 2 + 2 Push Back Seats)" ,
+					"price" : 1200,
+					"no._of_seats_available" : 30,
+					"boarding_point" : "P.R.G.Grounds" ,  
+					"droping_point" : "Lakdikapul" , 
+					"boarding_time" : "7:30 pm" , 
+					"arraival_time" : "8:30 am" ,
+					"available_days" : ["Sunday" , "Tuesday", "Thursday" , "Saturday"]
+				},
+				{
+					"bus_id":2,
+					"bus_name" : "Vikram Travels" , 
+					"description" : "Super Luxury Delux (AC, Sleeper)" ,
+					"price" : 1200,
+					"no._of_seats_available" : 12 , 
+					"boarding_point" : "Bhanugudi" ,
+					"droping_point" : "Ameerpeta" , 
+					"boarding_time" : "8:30 pm" , 
+					"arraival_time" : "7:30 am"  , 
+					"available_days" : ["Sunday" , "Monday", "Tuesday", "Wednesday" , "Thursday", "Friday", "Saturday"]
+				}, 
+				{
+					"bus_id":3,
+					"bus_name" : "Sunil Travels",
+					"description" : "Super Luxury (NON-AC, 2 + 2 Push Back Seats)" , 
+					"price" : 850,
+					"no._of_seats_available" : 28 , 
+					"boarding_point" : "Jaganadha Puram Bridge" , 
+					"droping_point" : "Secundrabad" , 
+					"boarding_time" : "6:30 pm",
+					"arraival_time" : "9:00 am" ,
+					"available_days" : ["Monday", "Wednesday", "Friday"]
+				}, 
+				{
+					"bus_id":4,
+					"bus_name" : "Arjun Travels" ,
+					"description" : "Delux (Non-AC, Semi-Sleeper)", 
+					"price" : 800,
+					"no._of_seats_available" : 25 ,
+					"boarding_point" : "Y.S.R.Bridge" , 
+					"droping_point" : "Erragadda" ,
+					"boarding_time" : "7:30 pm",
+					"arraival_time" : "8:30 am" ,
+					"available_days" : ["Sunday" , "Tuesday", "Wednesday" , "Friday"]
+				}
+			]
+		}, 
+		{
+			"from" : "Kakinada",
+			"to"  : "Vijayawada" , 
+			"GST" : 5,
+			"bus_details" : 
+			[
+				{
+					"bus_id":5,
+					"bus_name" : "Orange Travels",
+					"description" : "Super Luxury (AC, 2 + 2 Push Back Seats)" , 
+					"price" : 550,
+					"no._of_seats_available" : 30,
+					"boarding_point" : "P.R.G.Grounds" ,  
+					"droping_point" : "Rtc Bus Stand" , 
+					"boarding_time" : "3:00 am" , 
+					"arraival_time" : "8:15 am" ,
+					"available_days" : ["Sunday" , "Tuesday", "Thursday" , "Saturday"]
+				},
+				{
+					"bus_id":6,
+					"bus_name" : "Chiru Travels" , 
+					"description" : "Super Luxury Delux (AC, Sleeper)" ,
+					"price" : 600,
+					"no._of_seats_available" : 12 , 
+					"boarding_point" : "Bhanugudi" ,
+					"droping_point" : "Rtc Bus Stand" , 
+					"boarding_time" : "2:00 pm" , 
+					"arraival_time" : "7:35 am"  , 
+					"available_days" : ["Sunday" , "Monday", "Tuesday", "Wednesday" , "Thursday", "Friday", "Saturday"]
+				}, 
+				{
+					"bus_id":7,
+					"bus_name" : "Sri Ram Travels",
+					"description" : "Super Luxury (NON-AC, 2 + 2 Push Back Seats)" , 
+					"price" : 400,
+					"no._of_seats_available" : 28 , 
+					"boarding_point" : "Jaganadha Puram Bridge" , 
+					"droping_point" : "Rtc Bus Stand" , 
+					"boarding_time" : "4:30 am",
+					"arraival_time" : "10:30 am" ,
+					"available_days" : ["Monday", "Wednesday", "Friday"]
+				}, 
+				{
+					"bus_id":8,
+					"bus_name" : "Sai Travels" ,
+					"description" : "Delux (Non-AC, Semi-Sleeper)", 
+					"price" : 300,
+					"no._of_seats_available" : 25 ,
+					"boarding_point" : "Y.S.R.Bridge" , 
+					"droping_point" : "Rtc Bus Stand" ,
+					"boarding_time" : "7:30 pm",
+					"arraival_time" : "11:30 pm" ,
+					"available_days" : ["Sunday" , "Tuesday", "Wednesday" , "Friday"]
+				}
+			]
+		}, 
+		{
+			"from" : "Kakinada",
+			"to"  : "Vishakapatnam" , 
+			"GST" : 5,
+			"bus_details" : 
+			[
+				{
+					"bus_id":9,
+					"bus_name" : "Jagan Anna Travels",
+					"description" : "Super Luxury (AC, 2 + 2 Push Back Seats)" , 
+					"price" : 600,
+					"no._of_seats_available" : 30,
+					"boarding_point" : "P.R.G.Grounds" ,  
+					"droping_point" : "RTC Complex" , 
+					"boarding_time" : "12:15 am" , 
+					"arraival_time" : "8:30 am" ,
+					"available_days" : ["Sunday" , "Tuesday", "Thursday" , "Saturday"]
+				},
+				{
+					"bus_id":10,
+					"bus_name" : "Srinu Travels" , 
+					"description" : "Super Luxury Delux (AC, Sleeper)" ,
+					"price" : 650,
+					"no._of_seats_available" : 12 , 
+					"boarding_point" : "Bhanugudi" ,
+					"droping_point" : "RTC Complex" , 
+					"boarding_time" : "1:40 pm" , 
+					"arraival_time" : "6:30 pm"  , 
+					"available_days" : ["Sunday" , "Monday", "Tuesday", "Wednesday" , "Thursday", "Friday", "Saturday"]
+				}, 
+				{
+					"bus_id":11,
+					"bus_name" : "Pingali Travels",
+					"description" : "Super Luxury (NON-AC, 2 + 2 Push Back Seats)" ,
+					"price" : 303,
+					"no._of_seats_available" : 28 , 
+					"boarding_point" : "Jaganadha Puram Bridge" , 
+					"droping_point" : "RTC Complex" , 
+					"boarding_time" : "4:00 am",
+					"arraival_time" : "7:00 am" ,
+					"available_days" : ["Monday", "Wednesday", "Friday"]
+				}, 
+				{
+					"bus_id":12,
+					"bus_name" : "Arjun Travels" ,
+					"description" : "Delux (Non-AC, Semi-Sleeper)", 
+					"price" : 281,
+					"no._of_seats_available" : 25 ,
+					"boarding_point" : "Y.S.R.Bridge" , 
+					"droping_point" : "Erragadda" ,
+					"boarding_time" : "4:30 pm",
+					"arraival_time" : "7:30 am" ,
+					"available_days" : ["Sunday" , "Tuesday", "Wednesday" , "Friday"]
+				}
+			]
+		}
+	]  
+
+let from_location = document.getElementById('from_location') ; 
+let to_location = document.getElementById('to_location') ;
+
+function show_buses_list() {
+	document.getElementById('output').style.display = "block" ; 
+	if ((from_location.value == "Kakinada") && (to_location.value == "Hyderabad")){
+		var str = "<table>" ;
+	 	for (i = 0 ;  i < bus_data[0]["bus_details"].length ;  i++){
+	 		str += "<tr> <td>" + bus_data[0]["bus_details"][i]["bus_name"] + "<br>" + bus_data[0]["bus_details"][i]["description"] + "</td>" ; 
+	 		str += "<td>" + bus_data[0]["bus_details"][i]["boarding_time"] + "<br>" + bus_data[0]["bus_details"][i]["boarding_point"] + "</td>" ; 
+	 		str += "<td>" + bus_data[0]["bus_details"][i]["arraival_time"] + "<br>" + bus_data[0]["bus_details"][i]["droping_point"] + "</td>" ; 
+	 		str += "<td>" + bus_data[0]["bus_details"][i]["price"] + " /-"+"</td>" ; 
+	 		str += "<td><input type='button' value = 'Book Now' class='btn btn-primary btn-sm' data-bs-toggle='modal' data-bs-target='#staticBackdrop' onclick=bus_details1("+bus_data[0]["bus_details"][i]["bus_id"]+")></td>" ;
+	 	}
+	 	str += "</table>" ; 
+	 	document.getElementById("buses_list").innerHTML = str ; 
+	} 
+	else if ((from_location.value == "Kakinada") && (to_location.value == "Vijayawada")){
+		var str = "<table>" ;
+		for (i = 0 ;  i < bus_data[1]["bus_details"].length ;  i++){
+	 		str += "<tr> <td>" + bus_data[1]["bus_details"][i]["bus_name"] + "<br>" + bus_data[1]["bus_details"][i]["description"] + "</td>" ; 
+	 		str += "<td>" + bus_data[1]["bus_details"][i]["boarding_time"] + "<br>" + bus_data[1]["bus_details"][i]["boarding_point"] + "</td>" ; 
+	 		str += "<td>" + bus_data[1]["bus_details"][i]["arraival_time"] + "<br>" + bus_data[1]["bus_details"][i]["droping_point"] + "</td>" ; 
+	 		str += "<td>" + bus_data[1]["bus_details"][i]["price"] + " /-"+"</td>" ; 
+	 		str += "<td><input type='button' value = 'Book Now' class='btn btn-primary btn-sm' data-bs-toggle='modal' data-bs-target='#staticBackdrop' onclick=bus_details1("+bus_data[1]["bus_details"][i]["bus_id"]+")></td>" ;
+	 	}
+	 	str += "</table>"
+	 	document.getElementById("buses_list").innerHTML = str ;
+	}
+	else if ((from_location.value == "Kakinada") && (to_location.value == "Vishakapatnam")){
+		var str = "<table>" ;
+		for (i = 0 ;  i < bus_data[2]["bus_details"].length ;  i++){
+	 		//console.log(bus_data[0]["bus_details"][i]["bus_name"])
+	 		str += "<tr> <td>" + bus_data[2]["bus_details"][i]["bus_name"] + "<br>" + bus_data[2]["bus_details"][i]["description"] + "</td>" ; 
+	 		str += "<td>" + bus_data[2]["bus_details"][i]["boarding_time"] + "<br>" + bus_data[2]["bus_details"][i]["boarding_point"] + "</td>" ; 
+	 		str += "<td>" + bus_data[2]["bus_details"][i]["arraival_time"] + "<br>" + bus_data[2]["bus_details"][i]["droping_point"] + "</td>" ; 
+	 		str += "<td>" + bus_data[2]["bus_details"][i]["price"] + " /-"+"</td>" ; 
+	 		str += "<td><input type='button' value = 'Book Now' class='btn btn-primary btn-sm' data-bs-toggle='modal' data-bs-target='#staticBackdrop' onclick= bus_details1("+bus_data[2]["bus_details"][i]["bus_id"]+")></td>" ;
+	 	}
+	 	str += "</table>"
+	 	document.getElementById("buses_list").innerHTML = str ;
+	}
+	else{
+		document.getElementById('output').style.display = "none" ; 
+		document.getElementById("error_msg").style.display = "block"
+	}
+}
+
+function bus_details1(bid){
+	console.log("Print Something")
+	var bus_name_popup = document.getElementById('show_bus_name_popup') ; 
+	var bus_boarding_popup = document.getElementById('show_bus_boarding_time_popup') ; 
+	var bus_arraival_popup = document.getElementById('show_bus_arraival_time_popup') ; 
+	var bus_ticket_price_popup = document.getElementById('show_bus_ticket_price_popup') ;
+	var bus_data_indexes = get_bus_details(bid) ; 
+	var bus_data_prime_index = bus_data_indexes[0] ;
+	var bus_data_secondary_index = bus_data_indexes[1] ; 
+
+	bus_name_popup.innerHTML = bus_data[bus_data_prime_index]["bus_details"][bus_data_secondary_index]["bus_name"] + "<br>" + bus_data[bus_data_prime_index]["bus_details"][bus_data_secondary_index]["description"] ;  
+	bus_boarding_popup.innerHTML = bus_data[bus_data_prime_index]["bus_details"][bus_data_secondary_index]["boarding_time"] + "<br>" +bus_data[bus_data_prime_index]["bus_details"][bus_data_secondary_index]["boarding_point"] ;
+	bus_arraival_popup.innerHTML = bus_data[bus_data_prime_index]["bus_details"][bus_data_secondary_index]["arraival_time"] + "<br>" +bus_data[bus_data_prime_index]["bus_details"][bus_data_secondary_index]["droping_point"] ;
+	bus_ticket_price_popup.innerHTML = bus_data[bus_data_prime_index]["bus_details"][bus_data_secondary_index]["price"] ;
+
+	document.getElementById("journey_details").innerHTML = bus_data[bus_data_prime_index]["from"] + " - " + bus_data[bus_data_prime_index]["to"] ; 
+	document.getElementById('ticket_price').innerHTML = bus_data[bus_data_prime_index]["bus_details"][bus_data_secondary_index]["price"] ; 
+	document.getElementById("GST").innerHTML = bus_data[bus_data_prime_index]["GST"] ; 
+
+}
+
+function get_bus_details(bid){
+	for (k=0 ; k < bus_data.length ; k++){
+		for (i = 0 ; i < bus_data[k]["bus_details"].length ; i++){
+			if (bid == (bus_data[k]["bus_details"][i]["bus_id"])){
+				indexs = [ k , i] ;
+				return indexs ; 
+			}
+		}
+	}
+}
+
+function review_deatils(){
+	document.getElementById("journey_review_details").style.display = "block";
+	var username = document.getElementById('customer_name').value ; 
+	document.getElementById('user_name').innerHTML = username ; 
+	var userNumber = document.getElementById("customer_num").value ; 
+	document.getElementById("user_number").innerHTML = userNumber ; 
+	var doj = document.getElementById("date_of_journey_input").value ; 
+	document.getElementById("date_of_journey").innerHTML = doj ; 
+	var no_of_ts = document.getElementById("total_tickets_input").value ; 
+	document.getElementById("total_tickets").innerHTML = no_of_ts ;
+}
+
+function confirmation() {
+	alert("Your Ticket has been Booked Successfully. You will receive your ticket shortly on registered Mobile Number. Thank You!!! ")
+}
+
+</script>
+</body>
+</html>

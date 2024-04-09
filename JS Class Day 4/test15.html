@@ -1,0 +1,19 @@
+<script>
+
+var str = "Rama is a good boy";
+
+var alphabets = {};
+
+for(i=0;i<str.length;i++){
+
+	if( str[i] in alphabets ){
+		alphabets[ str[i] ]++;
+	}else{
+		alphabets[ str[i] ] = 1;
+	}
+}
+
+for(var i in alphabets ){
+	document.write("<div>" + i + ": " + alphabets[i] + "</div>");
+}
+</script>

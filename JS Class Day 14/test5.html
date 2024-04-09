@@ -1,0 +1,222 @@
+<html>
+<body>
+<style>
+	.box{ width:10px; height: 10px; display: inline-block; }
+</style>
+<script>
+
+colors = [
+	[0,0,0],
+	[20,0,0],
+	[40,0,0],
+	[60,0,0],
+	[80,0,0],
+	[100,0,0],
+	[120,0,0],
+	[140,0,0],
+	[160,0,0],
+	[180,0,0],
+	[200,0,0],
+	[220,0,0],
+	[240,0,0],
+	[255,0,0],
+	[0,0,0],
+	[0,20,0],
+	[0,40,0],
+	[0,60,0],
+	[0,80,0],
+	[0,100,0],
+	[0,120,0],
+	[0,140,0],
+	[0,160,0],
+	[0,180,0],
+	[0,200,0],
+	[0,220,0],
+	[0,240,0],
+	[0,255,0],
+	[0,0,0],
+	[0,0,20],
+	[0,0,40],
+	[0,0,60],
+	[0,0,80],
+	[0,0,100],
+	[0,0,120],
+	[0,0,140],
+	[0,0,160],
+	[0,0,180],
+	[0,0,200],
+	[0,0,220],
+	[0,0,240],
+	[0,0,255],
+	[0,0,0],
+	[0,20,20],
+	[0,40,40],
+	[0,60,60],
+	[0,80,80],
+	[0,100,100],
+	[0,120,120],
+	[0,140,140],
+	[0,160,160],
+	[0,180,180],
+	[0,200,200],
+	[0,220,220],
+	[0,240,240],
+	[0,255,255],
+	[0,0,0],
+	[20,0,20],
+	[40,0,40],
+	[60,0,60],
+	[80,0,80],
+	[100,0,100],
+	[120,0,120],
+	[140,0,140],
+	[160,0,160],
+	[180,0,180],
+	[200,0,200],
+	[220,0,220],
+	[240,0,240],
+	[255,0,255],
+	[0,0,0],
+	[20,20,0],
+	[40,40,0],
+	[60,60,0],
+	[80,80,0],
+	[100,100,0],
+	[120,120,0],
+	[140,140,0],
+	[160,160,0],
+	[180,180,0],
+	[200,200,0],
+	[220,220,0],
+	[240,240,0],
+	[255,255,0],
+];
+
+for(var i=0;colors.length;i++){
+	var c = "rgb("+colors[i][0]+","+colors[i][1]+","+colors[i][2]+")";
+	document.write("<div class='box' style='background-color:"+c+"' ></div>");
+}
+
+document.write("<BR>");
+
+r = 0;
+g = 0;
+b = 0;
+incr = "r";
+mode = "incr";
+
+for(var i=5;i<1000;i=i+1){
+	var c = "rgb("+r+","+g+","+b+")";
+	if( mode == "incr" ){
+		if( incr == "r" ){
+			r = r+10;
+			if( r > 255 ){
+				incr = "b";
+			}
+		}
+		if( incr == "b" ){
+			b = b+10;
+			if( b > 255 ){
+				incr = "g";
+			}
+		}
+		if( incr == "g" ){
+			g = g+10;
+			if( g > 255 ){
+				incr = "r";
+				mode = "decr";
+			}
+		}
+	}else if( mode == "decr" ){
+		if( incr == "r" ){
+			r = r-10;
+			if( r < 0 ){
+				r=0;
+				incr = "b";
+			}
+		}
+		if( incr == "b" ){
+			b = b-10;
+			if( b < 0 ){
+				b = 0;
+				incr = "g";
+			}
+		}
+		if( incr == "g" ){
+			g = g-10;
+			if( g < 0 ){
+				g = 0
+				break;
+			}
+		}
+	}
+	document.write("<div class='box' style='background-color:"+c+"' ></div>");
+}
+document.write("--<BR>");
+r = 0;
+g = 0;
+b = 0;
+mode = "incr";incr = "b";
+for(var i=5;i<1000;i=i+1){
+	var c = "rgb("+r+","+g+","+b+")";
+	if( mode == "incr" ){
+		if( incr == "r" ){
+			r = r+10;
+			if( r > 255 ){
+				incr = "g";
+			}
+		}
+		if( incr == "b" ){
+			b = b+10;
+			if( b > 255 ){
+				incr = "r";
+			}
+		}
+		if( incr == "g" ){
+			g = g+10;
+			if( g > 255 ){
+				incr = "b";
+				mode = "decr";
+			}
+		}
+	}else if( mode == "decr" ){
+		if( incr == "r" ){
+			r = r-10;
+			if( r < 0 ){
+				r=0;
+				break;
+			}
+		}
+		if( incr == "b" ){
+			b = b-10;
+			if( b < 0 ){
+				b = 0;
+				incr = "g";
+			}
+		}
+		if( incr == "g" ){
+			g = g-10;
+			if( g < 0 ){
+				g = 0
+				incr = "r";
+			}
+		}
+	}
+	document.write("<div class='box' style='background-color:"+c+"' ></div>");
+}
+document.write("<BR>");
+document.write("<BR>");
+for(var i=5;i<255;i=i+5){
+	var c = "rgb(0,"+i+",0)";
+	document.write("<div class='box' style='background-color:"+c+"' ></div>");
+}
+document.write("<BR>");
+for(var i=5;i<255;i=i+5){
+	var c = "rgb("+i+",0,0)";
+	document.write("<div class='box' style='background-color:"+c+"' ></div>");
+}
+
+
+</script>
+</body>
+</html>

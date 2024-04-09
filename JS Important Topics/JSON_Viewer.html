@@ -1,0 +1,86 @@
+<script>
+
+var data = {
+	"Andhra": {
+		"capital": "Kakinada",
+		"mla": "aparao",
+		"population": 34344,
+	},
+	"Kerala": {
+		"capital": "Kakinada",
+		"mla": "aparao",
+		"population": 34344,
+		"something": [
+			"one", "Two", "three", {
+				"sdj": "lsdjf",
+				"sdlf": 34343,
+				"somethng": [ 55,66,434,33]
+			}
+		]
+	},
+	
+}
+
+var example3 = 
+            {
+                "id": "0001",
+                "type": "donut",
+                "name": "Cake",
+                "ppu": 0.55,
+                "batters":
+                    {
+                        "batter":
+                            [
+                                { "id": "1001", "type": "Regular" },
+                                { "id": "1002", "type": "Chocolate" },
+                                { "id": "1003", "type": "Blueberry" },
+                                { "id": "1004", "type": "Devil's Food" }
+                            ]
+                    },
+                "topping":
+                    [
+                        { "id": "5001", "type": "None" },
+                        { "id": "5002", "type": "Glazed" },
+                        { "id": "5005", "type": "Sugar" },
+                        { "id": "5007", "type": "Powdered Sugar" },
+                        { "id": "5006", "type": "Chocolate with Sprinkles" },
+                        { "id": "5003", "type": "Chocolate" },
+                        { "id": "5004", "type": "Maple" }
+                    ]
+            }
+
+function print_tree( data ){
+	if( "length" in data ){
+		document.write("<ul>");
+		for( var i=0;i<data.length;i++){
+			if( typeof(data[i]) === "object" ){
+				document.write("<li>" + i );
+				print_tree( data[i] );
+				document.write("</li>" );
+			}else{
+				document.write("<li>" + i + ": " + data[i] + "</li>" );
+			}
+		}
+		document.write("</ul>");
+	}else{
+		document.write("<ul>");
+		for( var i in data ){
+			if( typeof(data[i]) == "object" ){
+				document.write("<li>" + i );
+				print_tree( data[i] );
+				document.write("</li>" );
+			}else{
+				document.write("<li>" + i + ": " + data[i] + "</li>" );
+			}
+		} 
+		document.write("</ul>");
+	}
+}
+
+print_tree( data );
+
+document.write("<hr>");
+
+print_tree(example3);
+
+</script>

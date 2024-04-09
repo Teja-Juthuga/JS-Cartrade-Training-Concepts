@@ -1,0 +1,23 @@
+<html>
+	<body>
+ 	 <script>
+		 var DOW = new Array("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday");
+       document.write("<table border=1><tr>");
+		 for (var i = 0; i < DOW.length; i++){
+		  
+
+		  	document.write("<th>"+DOW[i]+"</th>");
+		}
+		document.write("</tr><tr>");
+		for (var i = 1; i <= 30 ; i++){
+
+			document.write("<td>"+i+"</td>");
+			if(i % 7 == 0)
+			{
+				document.write("</tr>");
+			}
+		}
+		document.write("</tr></table>");
+	</script>
+		</body>
+</html>

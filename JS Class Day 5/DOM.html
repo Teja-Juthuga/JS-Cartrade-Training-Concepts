@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+</head>
+<body>
+<div>
+	<h2 style="text-align: center;"> Am I Eligible To Ride a Bike!!  </h2>
+	<table cellpadding="5">
+		<tr><th><p>Name:</p></th><td><input type="text" name="" placeholder="Please Enter Your Name" id="name"></td></tr>
+		<tr><th><p>Age:</p></th><td><input type="number" name="" placeholder="Please Enter Your Age" id="age"></td></tr>
+		<tr><th><p>&nbsp</p></th><td><button onclick="calculate()">Submit</button></td></tr>
+	</table>
+
+	<div><h3 id="result"></h3></div>
+
+<script>
+	var personName = document.getElementById("name") ; 
+	var personAge = document.getElementById("age"); 
+	var res = document.getElementById("result") ; 
+
+	function calculate() {
+		if (personAge < 18) {
+			res.textContent = "Oops!!Sorry Kid You are Not Eligile to Ride a Bike."
+		}
+		else {
+			res.textContent = "Hurray!! You are Eligile to Ride a Bike. Be Carful and Always wear Helmate"
+		}
+	}
+</script>
+</div>
+</body>
+</html>

@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+</head>
+
+<body>
+	<style>
+		.state_edit_popup {
+			display: none;
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0, 0, 0.5);
+		}
+
+		.state_edit_form {
+			position: absolute;
+			border: 1px solid #666;
+			top: 200px;
+			left: 200px;
+			background-color: white;
+			box-shadow: 5px 5px 10px black;
+			border-radius: 5px;
+		}
+
+		.state_edit_form .head {
+			background-color: #eee;
+			font-weight: bold;
+			padding: 10px;
+			border-top-left-radius: 5px;
+			border-top-right-radius: 5px;
+			border-bottom: 1px solid #999;
+		}
+
+		.state_edit_form .content {
+			padding: 10px;
+		}
+	</style>
+	<div>States:</div>
+
+	<table class="" border=1 cellspacing=0 cellpadding=5>
+		<tr>
+			<td>State</td>
+			<td>Capital</td>
+			<td>Population</td>
+		</tr>
+		<tbody id="states_list"></tbody>
+		<tr>
+			<td>
+				<input type="text" id="new_state">
+			</td>
+			<td>
+				<input type="text" id="new_capital">
+			</td>
+			<td>
+				<input type="text" id="new_population">
+			</td>
+			<td>
+				<input type="button" value="Add" onclick="add_state()">
+			</td>
+		</tr>
+	</table>
+	</div>
+
+	<div>&nbsp;</div>
+
+	<div class="state_edit_popup" id="state_edit_popup">
+		<div class="state_edit_form">
+			<div class="head">Edit State</div>
+			<div class="content">
+				<table>
+					<tr>
+						<td>State</td>
+						<td><input type="text" id="edit_state"></td>
+					</tr>
+					<tr>
+						<td>Capital</td>
+						<td><input type="text" id="edit_capital"></td>
+					</tr>
+					<tr>
+						<td>Population</td>
+						<td><input type="text" id="edit_population"></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><input type="button" value="Update" onclick="update_state()"></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<div id="show_city" style="display: none;">
+		<div>Cities:</div>
+
+		<table border=1 cellspacing=0 cellpadding=5>
+			<tr>
+				<td>City</td>
+				<td>Pincode</td>
+				<td>Population</td>
+				<td></td>
+			</tr>
+			<tbody id="cities_list"></tbody>
+			<tr>
+				<td>
+					<input type="text" id="new_city">
+				</td>
+				<td>
+					<input type="text" id="new_pincode">
+				</td>
+				<td>
+					<input type="text" id="new_city_population">
+				</td>
+				<td>
+					<input type="button" value="Add" onclick="add_city()">
+				</td>
+			</tr>
+		</table>
+	</div>
+	</div>
+	<div>&nbsp;</div>
+	<div id="show_area" style=" display: none;">
+		<div>Areas:</div>
+
+		<table border=1 cellspacing=0 cellpadding=5>
+			<tr>
+				<td>Area</td>
+				<td>Pincode</td>
+			</tr>
+			<tbody id="areas_list"></tbody>
+			<tr>
+				<td>
+					<input type="text" id="new_area">
+				</td>
+				<td>
+					<input type="text" id="new_area_pincode">
+				</td>
+				<td>
+					<input type="button" value="Add" onclick="add_area()">
+				</td>
+			</tr>
+		</table>
+	</div>
+	</div>
+
+	<script>
+		let data =
+			[
+				{
+					"state": "Telangana",
+					"capital": "Hyderabad",
+					"population": 35003674,
+					"cities": [{
+						"city": "Secunderabad",
+						"pincode": "533001",
+						"population": 500003,
+						"areas": [{
+							"area": "Hyder Shah Kote",
+							"pincode": 500008
+						},
+						{
+							"area": "Suraram",
+							"pincode": 500055
+						},
+						{
+							"area": "Mahatma Gandhi Road",
+							"pincode": 500003
+						},
+						{
+							"area": "Himmatnagar",
+							"pincode": 500025
+						},
+						{
+							"area": "Toli Chowki",
+							"pincode": 500008
+						}
+						]
+					},
+					{
+						"city": "Karimnagar",
+						"pincode": "502267",
+						"population": 500000,
+						"areas": [{
+							"area": "Collectorate Complex",
+							"pincode": 505001
+						},
+						{
+							"area": "Dist. court building",
+							"pincode": 505001
+						},
+						{
+							"area": "Durshed",
+							"pincode": 505001
+						},
+						{
+							"area": "Jawaharnagar",
+							"pincode": 505001
+						},
+						{
+							"area": "Jublikaman",
+							"pincode": 505001
+						}
+						]
+					},
+					{
+						"city": "Nalgonda",
+						"pincode": "508001",
+						"population": 170000,
+						"areas": [{
+							"area": "Adavdevulapally",
+							"pincode": 508207
+						},
+						{
+							"area": "Addagudur",
+							"pincode": 508277
+						},
+						{
+							"area": "Adloor",
+							"pincode": 508210
+						},
+						{
+							"area": "Chelmada",
+							"pincode": 508253
+						},
+						{
+							"area": "Chennaipalem",
+							"pincode": 508207
+						}
+						]
+					}
+					]
+				},
+				{
+					"state": "Andhra Pradesh",
+					"capital": "Amaravathi",
+					"population": 49386799,
+					"cities": [{
+						"city": "Kakinada",
+						"pincode": "533001",
+						"population": 443028,
+						"areas": [{
+							"area": "Suryanarayana Puram",
+							"pincode": 533001
+						},
+						{
+							"area": "Rayudi Palem",
+							"pincode": 533005
+						},
+						{
+							"area": "ADB Road",
+							"pincode": 533008
+						},
+						{
+							"area": "Banugudi",
+							"pincode": 533012
+						},
+						{
+							"area": "Masid Center",
+							"pincode": 533002
+						}
+						]
+					},
+					{
+						"city": "Bhimavaram",
+						"pincode": "534201",
+						"population": 160000,
+						"areas": [{
+							"area": "Bhimavaram Bazar ",
+							"pincode": 534206
+						},
+						{
+							"area": "Bhimavaram Railway Colony",
+							"pincode": 534207
+						},
+						{
+							"area": "D.n.r.college",
+							"pincode": 534202
+						},
+						{
+							"area": "Area One",
+							"pincode": 533002
+						},
+						{
+							"area": " Rayalam",
+							"pincode": 524534
+						}
+						]
+					},
+					{
+						"city": "Visakhapatnam",
+						"pincode": "500020",
+						"population": 2278000,
+						"areas": [{
+							"area": "Arilova",
+							"pincode": 530040
+						},
+						{
+							"area": "Aripaka",
+							"pincode": 531035
+						},
+						{
+							"area": "Arjunagiri",
+							"pincode": 531036
+						},
+						{
+							"area": "Anakapalle",
+							"pincode": 531001
+						},
+						{
+							"area": "Ch Laxmipuram",
+							"pincode": 531081
+						}
+						]
+					}
+					]
+				}
+			];
+
+		function add_state() {
+			data.push({
+				state: document.getElementById("new_state").value,
+				capital: document.getElementById("new_capital").value,
+				population: document.getElementById("new_population").value,
+			});
+			show_data();
+			document.getElementById("new_state").value = "";
+			document.getElementById("new_capital").value = "";
+			document.getElementById("new_population").value = "";
+		}
+
+		function show_data() {
+			var str = "<table>";
+			for (i in data) {
+				str += "<tr><td>" + data[i]["state"] + "</td>";
+				str += "<td>" + data[i]["capital"] + "</td>";
+				str += "<td>" + data[i]["population"] + "</td>";
+				str += "<td>" + "<input type = 'button' value='View Cities' onclick = 'show_cities(" + i + ")'>" +
+					"<input type = 'button' value='Edit' onclick = 'edit_state(" + i + ")'>" +
+					"<input type = 'button' value='Delete' onclick = 'del_state(" + i + ")'>" + "</td></tr>"
+			}
+			str += "</table>";
+			document.getElementById('states_list').innerHTML = str;
+		}
+
+		var editing_state_id = -1;
+		function edit_state(item) {
+			editing_state_id = item;
+			document.getElementById("state_edit_popup").style.display = "block";
+			document.getElementById('edit_state').value = data[editing_state_id]["state"];
+			document.getElementById('edit_capital').value = data[editing_state_id]["capital"];
+			document.getElementById('edit_population').value = data[editing_state_id]["population"];
+		}
+
+		function update_state() {
+			data[editing_state_id]["state"] = document.getElementById("edit_state").value;
+			data[editing_state_id]["capital"] = document.getElementById("edit_capital").value;
+			data[editing_state_id]["population"] = document.getElementById("edit_population").value;
+			document.getElementById("state_edit_popup").style.display = "none";
+			show_data()
+		}
+		function del_state(item) {
+			data.splice(item, 1);
+			show_data()
+		}
+
+		function show_cities(item) {
+
+			editing_state_id = item;
+			document.getElementById("show_city").style.display = "block";
+			var city_str = "<table>";
+			for (i in data[item]["cities"]) {
+				city_str += "<tr>";
+				city_str += "<td>" + data[item]["cities"][i]["city"] + "</td>";
+				city_str += "<td>" + data[item]["cities"][i]["pincode"] + "</td>";
+				city_str += "<td>" + data[item]["cities"][i]["population"] + "</td>";
+				city_str += "<td>" + `<input type= 'button' value
+		= 'View Areas' onclick = view_areas(`+ i + `)> ` + "</td>";
+
+			}
+			city_str += "</table>"
+			document.getElementById("cities_list").innerHTML = city_str;
+		}
+
+		function view_areas(i) {
+			var areasList = data[editing_state_id]["cities"][i]["areas"];
+			document.getElementById('show_area').style.display = "block";
+			areas_str = "<table>";
+			for (i in areasList) {
+				areas_str += "<tr>";
+				areas_str += "<td>" + areasList[i]["area"] + "</td>";
+				areas_str += "<td>" + areasList[i]["pincode"] + "</td></tr>";
+			}
+			areas_str += "</table>";
+			document.getElementById("areas_list").innerHTML = areas_str;
+		}
+
+
+		show_data()
+	</script>
+</body>
+
+</html>

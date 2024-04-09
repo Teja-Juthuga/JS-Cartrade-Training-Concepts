@@ -1,0 +1,113 @@
+<html>
+<body>
+<table>
+<tr>
+	<td>ID</td><td>Name</td><td>Des</td><td>Manager</td><td></td>
+</tr>
+<tbody id="emplist">
+	
+</tbody>
+<tr>
+<td><input type="text" value="" id="new_id" ></td>
+<td><input type="text" value="" id="new_name" ></td>
+<td><input type="text" value="" id="new_des" ></td>
+<td>
+	<select id="new_manager">
+	</select>
+</td>
+<td><input type="button" value="+" onclick="add_new()" ></td>
+</tr>
+</table>
+<div id="emp_tree" >
+	</div>
+<script>
+emp = [
+    {
+        "name": "Suresh",
+        "des": "Manager",
+        "id": "001",
+        "manager_id": -1
+    },
+    {
+        "id": "34",
+        "name": "Satish",
+        "des": "sdlfjks",
+        "manager_id": "001"
+    },
+    {
+        "id": "55",
+        "name": "Ganesh",
+        "des": "Assistant",
+        "manager_id": "34"
+    },
+    {
+        "id": "77",
+        "name": "Rajesh",
+        "des": "Developer",
+        "manager_id": "55"
+    }
+];
+
+function find_manager_name( vid ){
+	for(var i=0;i<emp.length;i++){
+		if( emp[i]['id'] == vid ){
+			return emp[i]['name'];
+		}
+	}
+	return "NotFound";
+}
+
+function generate_table(){
+	var str = "";
+	var options = "";
+	for(var i=0;i<emp.length;i++){
+		options = options + "<option value='" + emp[i]['id'] + "' >" + emp[i]['name'] + " (" + emp[i]['des'] + ")</option>";
+
+		str = str + "<tr>";
+		str = str + "<td>" + emp[i]['id'] + "</td>";
+		str = str + "<td>" + emp[i]['name'] + "</td>";
+		str = str + "<td>" + emp[i]['des'] + "</td>";
+		str = str + "<td>" + find_manager_name(emp[i]['manager_id']) + "</td>";
+		str = str + "<td>";
+		str = str + `<input type="button" value="E" ><input type="button" value="X" >`
+		str = str + "</td>";
+		str = str + "</tr>";
+	}
+	document.getElementById("emplist").innerHTML = str;
+	document.getElementById("new_manager").innerHTML = options;
+	document.getElementById("emp_tree").innerHTML = generate_tree(-1);
+}
+function generate_tree(manager_id){
+	vstr = "<ul>";
+	for(var i=0;i<emp.length;i++){
+		if( emp[i]['manager_id'] == manager_id ){
+			vstr = vstr + "<li>";
+			vstr = vstr + emp[i]['name'];
+			vstr = vstr + generate_tree(emp[i]['id']);
+			vstr = vstr + "</li>";
+		}
+	}		 
+	vstr = vstr+ "</ul>";
+	return vstr;
+}
+function add_new(){
+	vid = document.getElementById("new_id").value;
+	vname = document.getElementById("new_name").value;
+	vdes = document.getElementById("new_des").value;
+	vmanager_id = document.getElementById("new_manager").value;
+	document.getElementById("new_id").value = "";
+	document.getElementById("new_name").value = "";
+	document.getElementById("new_des").value = "";
+	document.getElementById("new_manager").value = "";
+	emp.push({
+		"id": vid,
+		"name": vname,
+		"des": vdes,
+		"manager_id": vmanager_id,
+	});
+	generate_table();
+}
+generate_table()
+</script>
+</body>
+</html>

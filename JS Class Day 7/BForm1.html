@@ -1,0 +1,217 @@
+<style>
+	table.sp { border:1px solid black; border-collapse: collapse; }
+	table.sp td{ border:0.5px solid black; padding: 5px; }
+
+	.state_edit_popup{
+		display: none;
+		position: absolute;
+		top: 0px; left: 0px; width: 100%; height: 100%;
+		background-color: rgba(0,0,0,0.5);
+	}
+	.state_edit_form{ 
+		position: absolute; 
+		border:  1px solid #666;
+		top: 200px; left: 200px;
+		background-color: white;
+		box-shadow: 5px 5px 10px black;
+		border-radius: 5px;
+	}
+	.state_edit_form .head{ background-color: #eee; font-weight: bold; padding: 10px; border-top-left-radius: 5px;border-top-right-radius: 5px;  border-bottom:1px solid #999; }
+	.state_edit_form .content{  padding: 10px; }
+
+</style>
+
+<div>States:</div>
+		<table class="sp">
+			<tr>
+				<td>State</td><td>Capital</td><td>Population</td>
+			</tr>
+			<tbody id="states_list" ></tbody>
+			<tr>
+				<td>
+					<input type="text" id="new_state" >
+				</td>
+				<td>
+					<input type="text" id="new_capital" >
+				</td>
+				<td>
+					<input type="text" id="new_population" >
+				</td>
+				<td>
+					<input type="button" value="Add" onclick="add_state()" >
+				</td>
+			</tr>
+			</table>
+<div>&nbsp;</div>		
+<div>Cities:</div>		
+			<table class="sp">
+			<tr>
+				<td>State</td><td>City</td><td>Pincode</td><td>Population</td>
+			</tr>
+			<tbody id="cities_list" ></tbody>
+			<tr>
+				<td>
+					<select id="n ew_city_state" >
+					</select>
+				</td>
+				<td>
+					<input type="text" id="new_city" >
+				</td>
+				<td>
+					<input type="text" id="new_pincode" >
+				</td>
+				<td>
+					<input type="text" id="new_city_population" >
+				</td>
+				<td>
+					<input type="button" value="Add" onclick="add_city()" >
+				</td>
+			</tr>
+			</table>
+		
+</div>
+
+<div class="state_edit_popup" id="state_edit_popup" >
+	<div class="state_edit_form" >
+		<div class="head">Edit State</div>
+		<div class="content">
+			<table>
+				<tr>
+					<td>State</td>
+					<td><input type="text" id="edit_state" ></td>
+				</tr>
+				<tr>
+					<td>Capital</td>
+					<td><input type="text" id="edit_capital" ></td>
+				</tr>
+				<tr>
+					<td>Population</td>
+					<td><input type="text" id="edit_population" ></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><input type="button" value="Update" onclick="update_state()" ></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>
+
+<script>
+
+states = [
+	{
+		"state": "Andhra Pradesh",
+		"capital": "Amaravathi",
+		"population": 34535353
+	},
+	{
+		"state": "Kerala",
+		"capital": "tttttt",
+		"population": 34535353
+	},
+];
+cities = [
+	{
+		"city": "Kakinada",
+		"state": "Andhra Pradesh",
+		"pincode": "533001",
+		"population": 35353
+	},
+	{
+		"city": "Pitapuram",
+		"state": "Andhra Pradesh",
+		"pincode": "533002",
+		"population": 35353
+	},
+	{
+		"city": "Vijayawada",
+		"state": "Andhra Pradesh",
+		"pincode": "633001",
+		"population": 35353
+	},
+];
+function add_state(){
+	states.push({
+		"state": document.getElementById("new_state").value,
+		"capital": document.getElementById("new_capital").value,
+		"population": document.getElementById("new_population").value,
+	});
+	console.log( states );
+	display_states();
+}
+//ctrl + f2 = to bookmark ; shift+ f2 = to jump
+function display_states(){
+	var str = "<table>";
+	for(var i=0;i<states.length;i++){
+		str = str + "<tr>";
+		str = str + "<td>" + states[ i ]['state'] + "</td>";
+		str = str + "<td>" + states[ i ]['capital'] + "</td>";
+		str = str + "<td>" + states[ i ]['population'] + "</td>";
+		str = str + "<td><input type=\"button\" value=\"Edit\" onclick=\"show_state_edit_form("+i+")\" ><input type=\"button\" value=\"Delete\" onclick=\"delete_state("+i+")\" ></td>";
+		str = str + "</tr>";
+	}
+	str = str + "</table>";
+	document.getElementById("states_list").innerHTML = str;
+
+	var str = "";
+	for(var i=0;i<states.length;i++){
+		str = str + "<option value=\""+states[i]['state']+"\">" + states[i]['state'] + "</option>";
+	}
+	document.getElementById("new_city_state").innerHTML = str;
+}
+function delete_state( state_id ){
+	states.splice(state_id, 1);
+	display_states();
+}
+var editing_state_id = -1;
+function show_state_edit_form( state_id ){
+	editing_state_id = state_id;
+	document.getElementById("state_edit_popup").style.display = 'block';
+	document.getElementById("edit_state").value =  states[ state_id ]['state'];
+	document.getElementById("edit_capital").value =  states[ state_id ]['capital'];
+	document.getElementById("edit_population").value =  states[ state_id ]['population'];
+}
+
+function update_state(){
+	states[ editing_state_id ]['state'] = document.getElementById("edit_state").value;
+	states[ editing_state_id ]['capital'] = document.getElementById("edit_capital").value;
+	states[ editing_state_id ]['population'] = document.getElementById("edit_population").value;
+	display_states();
+	document.getElementById("state_edit_popup").style.display = 'none	';
+}
+
+
+function add_city(){
+	cities.push({
+		"state": document.getElementById("new_city_state").value,
+		"city": document.getElementById("new_city").value,
+		"pincode": document.getElementById("new_pincode").value,
+		"population": document.getElementById("new_city_population").value,
+	});
+	console.log( cities );
+	display_cities();
+}
+function display_cities(){
+	var str = "<table>";
+	for(var i=0;i<cities.length;i++){
+		str = str + "<tr>";
+		str = str + "<td>" + cities[ i ]['state'] + "</td>";
+		str = str + "<td>" + cities[ i ]['city'] + "</td>";
+		str = str + "<td>" + cities[ i ]['pincode'] + "</td>";
+		str = str + "<td>" + cities[ i ]['population'] + "</td>";
+		str = str + "<td><input type=\"button\" value=\"X\" onclick=\"delete_city("+i+")\" ></td>";
+		str = str + "</tr>";
+	}
+	str = str + "</table>";
+	document.getElementById("cities_list").innerHTML = str;
+}
+function delete_city( city_id ){
+	cities.splice(city_id, 1);
+	display_cities();
+}
+
+display_states();
+display_cities();
+
+</script>

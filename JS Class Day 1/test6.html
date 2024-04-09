@@ -1,0 +1,41 @@
+<script>
+
+	states = [];
+	states = new Array();
+
+	//v = ssss;
+
+	states = ["Andhra Pradesh", "Kerala", "Maharashtra"];
+
+	 
+	for (i in states){
+		document.write(i)
+	}
+
+	states[1] = "Something";
+
+	for(i=0;i<states.length;i++){
+		document.write( states[ i ]  + "<BR>");
+	}
+
+	//states.push( "new state ");
+	//states.pop();
+
+	document.write( "tttt<BR>");
+
+	states = {
+		"Andhra Pradesh": "Bramaravathi",
+		"Kerala": "Trivandrum",
+		"Maharastra": "Mumbai"
+	};
+document.write(states)
+console.log(states)
+	document.write( "<table border='1'> ");
+	for(key in states){
+		document.write( "<tr>");
+		document.write( "<td>"+ key + "</td><td>" + states[ key ]  + "</td>");
+		document.write( "</tr>");
+	}
+	document.write( "</table>");
+
+</script>

@@ -1,0 +1,67 @@
+
+<style>
+	.circle{ position: absolute; width: 50px; height: 50px; background-color: gray; border-radius: 50%; }
+</style>
+<body>
+</body>
+
+<script>
+
+
+circle_id = 1;
+t = 0;
+l = 0;
+for(var i=0;i<100;i++){
+	document.write("<div id=\"circle_"+circle_id+"\" class='circle' style='left:"+l+"px;top:"+t+"px;' ></div>");
+	circle_id++;
+	l = l +50;
+	console.log( window.innerWidth );
+	if( l > (window.innerWidth-50) ){
+		break;
+	}
+}
+t = 50;
+l = l - 50;
+for(var i=0;i<100;i++){
+	document.write("<div  id=\"circle_"+circle_id+"\" class='circle' style='left:"+l+"px;top:"+t+"px;' ></div>");
+	circle_id++;
+	t = t +50;
+	console.log( window.innerHeight );
+	if( t > (window.innerHeight-50) ){
+		break;
+	}
+}
+t = t - 50;
+for(var i=0;i<100;i++){
+	document.write("<div id=\"circle_"+circle_id+"\"  class='circle' style='left:"+l+"px;top:"+t+"px;' ></div>");
+	circle_id++;
+	l = l -50;
+	console.log( window.innerWidth );
+	if( l < 50  ){
+		break;
+	}
+}
+for(var i=0;i<100;i++){
+	document.write("<div id=\"circle_"+circle_id+"\"  class='circle' style='left:"+l+"px;top:"+t+"px;' ></div>");
+	circle_id++;
+	t = t -50;
+	console.log( window.innerHeight );
+	if( t < 50 ){
+		break;
+	}
+}
+
+start_id =1;
+function domagic(){
+	for(var j=start_id;j<start_id+3;j++){
+		document.getElementById("circle_"+j ).style.backgroundColor='gray';
+	}
+	start_id++;
+	for(var j=start_id;j<start_id+3;j++){
+		document.getElementById("circle_"+j ).style.backgroundColor='red';
+	}
+}
+
+setInterval("domagic()",50);
+
+</script>

@@ -1,0 +1,59 @@
+<html>
+<body>
+
+<div id="msg" ></div>
+<div><input type="button" value="Doit" onclick="doit()" ></div>
+
+<div id="counter" >0</div>
+<div><input type="button" value="Increment" onclick="increment()" ></div>
+
+<div id="counter2" >0</div>
+<div><input type="button" value="+" onclick="increment2()" ><input type="button" value="-" onclick="decrement2()" ></div>
+
+
+<div style="margin:10px; border:1px solid #ccc; display: inline-block; " >
+	<div style="padding:10px;background-color: #f0f0f0;">Simple interest</div>
+	<div style="padding: 10px;" >
+		<table cellpadding="5">
+		<tr><td>Loan</td><td><input id="loan" type="number" value="" ></td></tr>
+		<tr><td>Rate of interest</td><td><input id="int" type="number" value="" ></td></tr>
+		<tr><td>Tenure</td><td><input  id="tenure" type="number" value="" ></td></tr></table>
+		<input type="button" value="Calculate Interest" onclick="interest()" >
+		<div id="result" ></div>
+	</div>
+</div>
+
+
+
+<script>
+	function doit(){
+		document.getElementById("msg").innerHTML = "Yes i am clicked!";
+	}
+
+	function increment(){
+		var c = Number(document.getElementById("counter").innerHTML);
+		c = c + 1;
+		document.getElementById("counter").innerHTML = c;
+	}
+
+	var c2 = 0;
+	function increment2(){
+		c2 = c2 + 1;
+		document.getElementById("counter2").innerHTML = c2;
+	}
+	function decrement2(){
+		c2 = c2 - 1;
+		document.getElementById("counter2").innerHTML = c2;
+	}
+
+	function interest(){
+		p = Number(document.getElementById("loan").value);
+		r = Number(document.getElementById("int").value);
+		t = Number(document.getElementById("tenure").value);
+		i = p*t*r/100;
+		document.getElementById("result").innerHTML = "Interest: " + i;
+	}
+
+</script>
+</body>
+</html>

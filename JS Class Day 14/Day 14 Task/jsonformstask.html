@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+	<script src="config_selllead_status_sub_template_v4.js.js" ></script>
+
+</head>
+<body>
+
+<script>
+	
+function print_json(data) {
+	document.write("<ul>");
+	for( var i in data ){
+		if( typeof(data[i]) == "object" ){
+			document.write("<li>" + i + ": ");
+			print_json( data[i] );
+			document.write("</li>" );
+		}else{
+			document.write("<li>" + i + ": " + data[i] + "</li>" );
+		}
+	} 
+	document.write("</ul>");
+}
+
+print_json(information)
+
+
+		
+	/*document.write("<ul>");
+	for(level1 in information){
+		document.write(`<li>`);
+		document.write(`<label><input onclick="status_change('`+level1+`')" id="status_`+level1+`" type = "radio" name="level1">`+ information[level1]['title'] +`</label>`);
+			document.write("<div id='subitems_"+level1+"' style='display:none;'>");
+			//document.write("<p>" + information[level1]['title'] + "</p>");
+			document.write("<ul>");
+				for(level2 in information[level1]['q1']){
+					document.write(`<li>`);
+						document.write(`<div><label><input name="level2" type="radio" onclick="level2_change('`+level1+`','`+level2+`')" > ` + information[level1]['q1'][ level2 ]['name'] + "</label></div>");
+						if( information[level1]['q1'][ level2 ]['sub'] ){
+							document.write("<div id='subitems_"+level1+"_"+level2+"' style='display:none;'>");
+							document.write("<ul>");
+							for(level3 in information[level1]['q1'][ level2 ]['sub'] ){
+								document.write("<li>");
+								document.write(`<div><label><input name="level2" type="radio" onclick="level3_change('`+level1+`','`+level2+`','`+level3+`')" > ` + information[level1]['q1'][ level2 ]['sub'][ level3 ]['name'] + "</label></div>" );
+								if( information[level1]['q1'][ level2 ]['sub'][ level3 ]['sub'] ){
+									document.write("<div id='subitems_"+level1+"_"+level2+"_"+level3+"' style='display:none;'>");
+									document.write("<ul>");
+									for(level4 in information[level1]['q1'][ level2 ]['sub'][ level3 ]['sub'] ){
+										//console.log( level4 );
+										document.write("<li>");
+										document.write("<div>" + information[level1]['q1'][ level2 ]['sub'][ level3 ]['sub'][ level4 ]['name'] + "</div>" );
+										document.write("</li>");
+									}
+									document.write("</ul>");
+									document.write(`</div>`);
+								}
+								document.write("</li>");
+							}
+							document.write("</ul>");
+							document.write(`</div>`);
+						}
+					document.write(`</li>`);
+				}
+			document.write("</ul>");
+			document.write("</div>");
+		document.write(`</li>`);
+	}
+	document.write("</ul>");
+
+	document.write("<div id='vform' >");
+
+	document.write("</div>");
+
+
+	function status_change(selected_status){
+		//information[ selected_status ]['q1']
+		for(id in information){
+			document.getElementById("subitems_" + id).style.display = 'none';
+		}
+		document.getElementById("subitems_" + selected_status).style.display = 'block';
+
+	}
+
+	function level2_change(status,substatus){
+		console.log( status, substatus);
+		for(subid in information[status]['q1']){
+			//console.log( subid );
+			if( information[status]['q1'][subid]['sub'] ){
+				document.getElementById("subitems_" + status+ "_"+subid).style.display = 'none';
+			}
+		}
+		if( information[status]['q1'][substatus]['sub'] ){
+			document.getElementById("subitems_" + status + "_" +substatus).style.display = 'block';
+		}
+
+		if( substatus in information[status]['fields'] ){
+			console.log("fields found! " + status + " : " + substatus);
+			var vstr = "";
+			console.log( information[status]['fields'] );
+			console.log( information[status]['fields'][ substatus ][ 'fields' ].length );
+			for( var i=0;i<information[status]['fields'][ substatus ][ 'fields' ].length;i++ ){
+				vstr = vstr + "<div>" ;
+				vstr = vstr + information[status]['fields'][ substatus ][ 'fields' ][ i ]['name'] ;
+				vstr = vstr + " <input type='text' >";
+				vstr = vstr + "</div>" ;
+			}
+			console.log( vstr );
+			document.getElementById("vform").innerHTML = vstr;
+		}
+	}
+	function level3_change(lev1,lev2,lev3){
+		//console.log( lev1, lev2, lev3);
+		for( _lev3 in information[lev1]['q1'][lev2]['sub'] ){
+			//console.log( subid );
+			if( information[lev1]['q1'][lev2]['sub'][_lev3]['sub'] ){
+				document.getElementById("subitems_" + lev1+ "_"+lev2 + "_" + _lev3).style.display = 'none';
+			}
+		}
+		if( information[lev1]['q1'][lev2]['sub'][lev3]['sub'] ){
+			document.getElementById("subitems_" + lev1 + "_" +lev2 + "_" + lev3).style.display = 'block';
+		}
+
+		var fieldsgroup = lev2 + "-" + lev3;
+		if( fieldsgroup in information[lev1]['fields'] ){
+			console.log("fields found! " + lev1 + " : " + lev2 + ": " + lev3 );
+			var vstr = "";
+			console.log( information[lev1]['fields'] );
+			console.log( information[lev1]['fields'][ fieldsgroup ][ 'fields' ].length );
+			for( var i=0;i<information[lev1]['fields'][ fieldsgroup ][ 'fields' ].length;i++ ){
+				vstr = vstr + "<div>" ;
+				vstr = vstr + information[lev1]['fields'][ fieldsgroup ][ 'fields' ][ i ]['name'] ;
+				vstr = vstr + " <input type='text' >";
+				vstr = vstr + "</div>" ;
+			}
+			console.log( vstr );
+			document.getElementById("vform").innerHTML = vstr;
+		}
+
+	}
+*/
+   </script>
+</body>
+</html>

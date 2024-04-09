@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+ .ul, myUL {
+  list-style-type: none;
+}
+
+.myUL {
+  margin: 0;
+  padding: 0;
+}
+
+.caret {
+  cursor: pointer;
+  -webkit-user-select: none; 
+  -moz-user-select: none; 
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.caret::before {
+  content: "\25B6";
+  color: black;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.caret-down::before {
+  -ms-transform: rotate(90deg); /* IE 9 */
+  -webkit-transform: rotate(90deg); /* Safari */'
+  transform: rotate(90deg);  
+}
+
+.nested {
+  display: none;
+}
+
+.active {
+  display: block;
+}
+</style>
+</head>
+<body>
+
+<h2>Tree View</h2>
+<ul id="myUL">
+  <li><span class="caret">states</span>
+    <ul class="nested">
+      <li><span class="caret">Andhra Pradesh
+        <ul class="nested">
+          <li>Capital : Amaravathi</li>
+          <li>Population :49,386,799</li>
+          <li>Districts : 26</li>
+      </li>
+      </ul>
+      </span>
+      <li><span class="caret">Telangana
+        <ul class="nested">
+          <li>Capital : Hyderabad</li>
+          <li>Population : 3,50,03,674</li>
+          <li>Districts : 33</li>
+      </li>
+      </ul>
+      </span>
+      <li><span class="caret">kerala
+        <ul class="nested">
+          <li>Capital :Thiruvananthapuram</li>
+          <li>Districts : 14</li>
+          <li>Population :34.8 million</li>
+      </li>
+      </ul>
+      </span>
+      <li><span class="caret">Tamil nadu
+        <ul class="nested">
+          <li>Capital : Chennai</li>
+          <li>Population : 72147030</li>
+           <li>Districts : 38</li>
+           <ul class="nested">
+      </li>
+      </ul>
+      </span>
+            </ul>
+          </li>
+        </ul>
+      </li>  
+    </ul>
+  </li>
+</ul>
+
+<script>
+var toggler = document.getElementsByClassName("caret");
+var i;
+
+for (i = 0; i < toggler.length; i++) {
+  toggler[i].addEventListener("click", function() {
+    this.parentElement.querySelector(".nested").classList.toggle("active");
+    this.classList.toggle("caret-down");
+  });
+}
+</script>
+
+</body>
+</html>

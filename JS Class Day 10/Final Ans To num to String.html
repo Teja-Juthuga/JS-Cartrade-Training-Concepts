@@ -1,0 +1,445 @@
+<html>
+<script>
+
+words = {
+  1: "One",
+  2: "Two",
+  3: "Three",
+  4: "Four",
+  5: "Five",
+  6: "Six",
+  7: "Seven",
+  8: "Eight",
+  9: "Nine",
+};
+words2 = {        
+  1: "Ten",       
+  2: "Twenty",        
+  3: "Thirty",        
+  4: "Fourty",        
+  5: "Fifty",       
+  6: "Sixty",       
+  7: "Seventy",       
+  8: "Eighty",        
+  9: "Ninety",        
+  10: "Ten",        
+  11: "Eleven",       
+  12: "Tweleve",        
+  13: "Thirteen",       
+  14: "Fourteen",       
+  15: "Fifteen",        
+  16: "Sixteen",        
+  17: "Seventeen",        
+  18: "Eighteen",       
+  19: "Nineteen",       
+};
+
+var str = "";
+var n = 999999999;
+var pos = 1;
+
+var x1 = n % 10 ; 
+var x2 = n % 100 ; 
+
+
+// document.write(x1 + " , " + x2) ; 
+
+while( n >= 1 ){ 
+  document.write( "<BR>"+ n );
+  var n1 = n%10; 
+  var n2 = n%100;
+  if( pos == 8 ){
+    str = getword(n1,n2) + " Crore " + str; 
+  }else if( pos == 6 ){
+    str = getword(n1,n2) + " Lakh " + str; 
+  }else if( pos == 4 ){
+    str = getword(n1,n2) + " Thousand " + str; 
+  }else if( pos == 3 ){ 
+    if( n1 in words ){
+      str =  words[ n1 ] + " Hundred " + str; 
+    }else{
+      //str =  words[ n1 ] + " Hundred " + str; 
+    }
+    n  = parseInt(n/10);
+    pos++;
+  }else{
+    str = getword(n1,n2) + " " + str;
+  }
+  document.write( "<BR>"+ str );
+}
+
+
+function getword(n1,n2){
+  var str = "";
+  if( n2 >= 11 && n2 <= 19 ){
+     str =  words2[ n2 ];
+     n  = parseInt(n/100);
+     pos+=2;
+  }else if( n2 >= 20 && n2 <= 99 ){
+    n3 = parseInt(n2/10);
+    n4 = n2%10;
+    str = words2[ n3 ] + " " + words[ n4 ];
+    pos+=2;
+    n = parseInt(n/100);
+  }else{
+    if( pos == 2 && n1 != 0){ 
+      str =  words2[ n1 ];
+      n  = parseInt(n/10);
+      pos++;
+    }else if( n1 != 0 ){
+      str =  words[ n1 ];
+      n  = parseInt(n/10);
+      pos++;
+    }else if( n1 == 0 ){
+      n  = parseInt(n/10);
+      pos++;
+    }
+  }
+  return str;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</html>

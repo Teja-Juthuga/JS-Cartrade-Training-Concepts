@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+</head>
+<body>	
+<script> 
+
+	let a = "Generating random pargoingagraphs can be an excellent way for writers to get their creative flow at the beginning of the day. The writer has no idea what topic the random paragraph will be about when it appears. This forces the writer to use creativity to complete one of three common writing challenges. The writer can use the paragraph as the first one of a short story and build upon it. A second option is to use the random paragraph somewhere in a short story they create. The third option is to have the random paragraph be the ending paragraph in a short story. No matter which of these challenges is undertaken, the writer is forced to use creativity to incorporate the paragraph into their writing." 
+
+
+let myArray = a.split(" ") ; 
+count = 0 	
+
+for (i in myArray) {
+	newWord = myArray[i] ;
+	document.write(newWord + "<br>");	
+}  
+
+
+
+/*
+let words = "Writers write descriptive paragraphs because their purpose is to describe something. Their point is that something is beautiful or disgusting or strangely intriguing. Writers write persuasive and argument paragraphs because their purpose is to persuade or convince someone. Their point is that their reader should see things a particular way and possibly take action on that new way of seeing things. Writers write paragraphs of comparison because the comparison will make their point clear to their readers.";
+
+function countRepeatedWords(sentence) {
+  let words = sentence.split(" ");
+  let wordMap = {};
+
+  for (let i = 0; i < words.length; i++) {
+    let currentWordCount = wordMap[words[i]];
+    let count = currentWordCount ? currentWordCount : 0;
+    wordMap[words[i]] = count + 1;
+  }
+  return wordMap;
+}
+
+countRepeatedWords(words); 
+console.log(x)
+for (i in x) {
+	document.write( x + ":" + x[i] + "<br>")
+}
+ 
+
+
+
+function square(x) { 
+	return x * x ; 
+}
+
+let num = 15 ;
+let z = square(x = num); 
+document.write(z) 
+
+function sum(a,b){
+	let output=a+b;
+	return output
+}
+let x=10;
+let y=20;
+let c= sum(x,y);
+document.write(c);
+
+
+
+
+
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+let count_a = 0 ; 
+let count_e = 0 ; 
+let count_i = 0 ; 
+let count_o = 0 ; 
+let count_u = 0 ;
+
+	for (i in a) {
+		if (a[i] == "a" || a[i] == "A" ){
+			count_a += 1 ;
+		}
+		if (a[i] == "e" || a[i] == "E" ){
+			count_e += 1 ;
+		}
+		if (a[i] == "i" || a[i] == "I" ){
+			count_i += 1 ;
+		}
+		if (a[i] == "o" || a[i] == "O" ){
+			count_o += 1 ;
+		}
+		if (a[i] == "u" || a[i] == "U" ){
+			count_u += 1 ;
+		}
+
+	}
+let totalCount = count_a + count_e + count_i + count_o + count_u ; 
+document.write(a + "<br><br>") ; 
+
+document.write("Total Number of <b>a</b>'s in given paragraph are " + count_a + "<br>") ; 
+document.write("Total Number of <b>e</b>'s in given paragraph are " + count_e + "<br>") ; 
+document.write("Total Number of <b>i</b>'s in given paragraph are " + count_i + "<br>") ; 
+document.write("Total Number of <b>o</b>'s in given paragraph are " + count_o + "<br>") ; 
+document.write("Total Number of <b>u</b>'s in given paragraph are " + count_u + "<br><br>") ; 
+
+
+document.write("Total Number of <b>Vowels</b> in the paragraph are " + totalCount) ; 
+
+
+
+
+</script>
+
+</body>
+</html>

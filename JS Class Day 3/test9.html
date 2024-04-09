@@ -1,0 +1,75 @@
+<script>
+var data = [
+	{
+		"name": "Satish",
+		"manager_id": -1, // means he is top
+		"designation": "Manager"
+	},
+	{
+		"name": "Apparao",
+		"manager_id": 0, 
+		"designation": "Accountant"
+	},
+	{
+		"name": "Subbarao",
+		"manager_id": 0, 
+		"designation": "Office Admin"
+	},
+	{
+		"name": "Chandrarao",
+		"manager_id": 1, 
+		"designation": "Office Boy"
+	},
+	{
+		"name": "AppalaRaju",
+		"manager_id": 1, 
+		"designation": "Office Boy"
+	},
+	{
+		"name": "Raju",
+		"manager_id": 1, 
+		"designation": "Team Lead"
+	},
+	{
+		"name": "Suresh",
+		"manager_id": 5, 
+		"designation": "Software Developer"
+	},
+	{
+		"name": "Naresh",
+		"manager_id": 6, 
+		"designation": "Tester"
+	},
+];
+
+document.write("<ul>");
+for( level1 in data ){if( data[ level1 ]['manager_id'] == -1 ){
+	document.write("<li>");
+	document.write("<div>" + data[ level1 ]['name'] + " : " + data[ level1 ]['designation'] + "</div>");
+	document.write("<ul>");
+		for( level2 in data ){if( data[ level2 ]['manager_id'] == level1 ){
+			document.write("<li>");
+			document.write("<div>" + data[ level2 ]['name'] + " : " + data[ level2 ]['designation'] + "</div>");
+			document.write("<ul>");
+				for( level3 in data ){if( data[ level3 ]['manager_id'] == level2 ){
+					document.write("<li>");
+					document.write("<div>" + data[ level3 ]['name'] + " : " + data[ level3 ]['designation'] + "</div>");
+					document.write("<ul>");
+						for( level4 in data ){if( data[ level4 ]['manager_id'] == level3 ){
+							document.write("<li>");
+							document.write("<div>" + data[ level4 ]['name'] + " : " + data[ level4 ]['designation'] + "</div>");
+							
+							document.write("</li>");
+						}}
+					document.write("</ul>");					
+					document.write("</li>");
+				}}
+			document.write("</ul>");
+			document.write("</li>");
+		}}
+	document.write("</ul>");
+	document.write("</li>");
+}}
+document.write("</ul>");
+
+</script>

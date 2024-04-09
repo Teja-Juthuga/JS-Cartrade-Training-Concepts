@@ -1,0 +1,73 @@
+<div id="employees" >
+	<table border=1 cellpadding=5 cellspacing=0> 
+	<tr>
+		<td>ID</td><td>Name</td><td>Designation</td>
+	</tr>
+	<tbody id="emp_list" ></tbody>
+	<tr>
+		<td>
+			<input type="text" id="new_id" >
+		</td>
+		<td>
+			<input type="text" id="new_name" >
+		</td>
+		<td>
+			<input type="text" id="new_des" >
+		</td>
+		<td>
+			<input type="button" value="Add" onclick="add_employee()" >
+		</td>
+	</tr>
+	</table>
+</div>
+<script>
+
+
+
+employees = [
+	{
+		"id": "01",
+		"name": "Satish",
+		"des": "Manager"
+	},
+	{
+		"id": "02",
+		"name": "Prabhas",
+		"des": "hero"
+	},
+	{
+		"id": "03",
+		"name": "naresh",
+		"des": "boy"
+	}
+];
+function add_employee(){
+	employees.push({
+		"id": document.getElementById("new_id").value,
+		"name": document.getElementById("new_name").value,
+		"des": document.getElementById("new_des").value,
+	});
+	console.log( employees );
+	display_employees();
+}
+function display_employees(){
+	var str = "<table>";
+	for(var i=0;i<employees.length;i++){
+		str = str + "<tr>";
+		str = str + "<td>" + employees[ i ]['id'] + "</td>";
+		str = str + "<td>" + employees[ i ]['name'] + "</td>";
+		str = str + "<td>" + employees[ i ]['des'] + "</td>";
+		str = str + "<td><input type=\"button\" value=\"X\" onclick=\"delete_emp("+i+")\" ></td>";
+		str = str + "</tr>";
+	}
+	str = str + "</table>";
+	document.getElementById("emp_list").innerHTML = str;
+}
+function delete_emp( emp_id ){
+	employees.splice(emp_id, 1);
+	display_employees();
+}
+
+display_employees();
+
+</script>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+</head>
+<body>
+<style >
+	.state_edit_popup{
+		display: none;
+		position: absolute;
+		top: 0px; left: 0px; width: 100%; height: 100%;
+		background-color: rgba(0,0,0,0.5);
+	}
+	.state_edit_form{ 
+		position: absolute; 
+		border:  1px solid #666;
+		top: 200px; left: 200px;
+		background-color: white;
+		box-shadow: 5px 5px 10px black;
+		border-radius: 5px;
+	}
+	.state_edit_form .head{ background-color: #eee; font-weight: bold; padding: 10px; border-top-left-radius: 5px;border-top-right-radius: 5px;  border-bottom:1px solid #999; }
+	.state_edit_form .content{  padding: 10px; }
+
+
+</style>
+
+<div id="movieId">
+	<h3>Movies: </h3>
+<table border=1 cellpadding=5 cellspacing=0>
+	<tr><th>Name of the Movie</th><th>Director of the movie</th><th>Movie Release Date</th><th>Producer</th></tr>
+	<tbody id="movieList"></tbody> 
+	<td>
+		<input type="text" id="movieName" name="">
+	</td>
+	<td>
+		<input type="text" id="directorName" name="">
+	</td>
+	<td>
+		<input type="text" id="producerName" name="">
+	</td>
+	<td>
+		<input type="text" id="releaseDate" name="">
+	</td>
+	<td>
+		<input type="button" value="Add" onclick="addMovies()">
+	</td>
+</table>
+</div>
+
+<div id="castId" style="display: none;">
+	<h3>Cast: </h3>
+<table border=1 cellpadding=5 cellspacing=0>
+	<tr><th>Name </th><th>Name of the Character</th><th onclick = "closeCast()"><input type="button" value="x"></th></tr>
+	<tbody id="castList"></tbody> 
+	<td>
+		<input type="text" id="movieName" name="">
+	</td>
+	<td>
+		<input type="text" id="directorName" name="">
+	</td>
+	<td>
+		<input type="button" value="Add">
+	</td>
+</table>
+</div>
+
+<div id="otherMoviesId" style="display: none ;"> 
+	<h3>Other Movies: </h3>
+	<table border=1 cellpadding=5 cellspacing=0>
+		<tr><th>Movie Names</th><th onclick = "closeOtherMovies()"><input type="button" value="x"></th></tr>
+		<tbody id="movieList"></tbody> 
+		<td>
+			<input type="text" id="movieName" name="">
+		</td>
+		<td>
+			<input type="button" value="Add">
+		</td>
+	</table>
+</div>
+
+<div class="state_edit_popup" id="Movie_edit_popup" >
+	<div class="state_edit_form" >
+		<div class="head">Edit Movie</div>
+		<div class="content">
+			<table>
+				<tr>
+					<td>Name of the Movie: </td>
+					<td><input type="text" id="editMovieName" ></td>
+				</tr>
+				<tr>
+					<td>Director of the movie: </td>
+					<td><input type="text" id="editDirectorName" ></td>
+				</tr>
+					<tr>
+					<td>Movie Release Date: </td>
+					<td><input type="text" id="editReleaseDate" ></td>
+				</tr>
+				</tr>
+					<tr>
+					<td>Producer: </td>
+					<td><input type="text" id="editProducer" ></td>
+				</tr>
+				<tr>
+					<td>&nbsp</td>
+					<td><input type="button" value="Update" onclick="updateMovie()" ></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>
+<script> 
+
+let movie = 
+[
+{
+	"name" : "RRR", 
+	"director" : "Rajamouli",
+	"releaseDate" : "24 March 2022" ,
+	"producer" : "D. V. V. Danayya of DVV Entertainment" , 
+	"herosAndCharacters" : [
+
+		{
+			"Name" : "Jr.NTR",
+			"characterName" : "Komaram Bheem" , 
+			"otherMovies" : ["Ramayya Vasthavayya" , "Yama Donga", "Temper" , "Janatha Garage"]
+		},
+		{
+			"Name" : "Konedala Ram Charan",
+			"characterName" :"Alluri Sita Rama Raju" , 
+			"otherMovies" : ["Acharya", "Magadheera", "Rangasthalam", "Vinaya Vidhey Rama"]  
+		},
+		{
+			"Name" : "Alia Bhat", 
+			"characterName" : "Sita" , 
+			"otherMovies" : ["Brahmastra", "Student of Year" , "Gangubai Kathaiwadi", "Darlings"] 
+		},	 
+		{
+			"Name" : "Ajay Devgn",
+			"characterName" : "Venkata Rama Raju", 
+			"otherMovies": ["Runway 34", "Bhuj" , "Tanhaji","Raid"]   
+		}]
+},
+{
+	"name" : "Pokiri", 
+	"director" : "Puri Jaganath",
+	"releaseDate" : "28 April 2006" ,
+	"producer" : "Jagannadh and Manjula Ghattamaneni" , 
+	"herosAndCharacters" : [
+
+		{
+			"Name" : "Mahesh Babu",
+			"characterName" : "Pandu" , 
+			"otherMovies" : ["Srimanthudu" , "Business Man", "Aagadu" , "Naani"] , 
+		},
+		{
+			"Name" : "Ileana",
+			"characterName" :"Sruthi" , 
+			"otherMovies" : ["Barfi", "Nanban", "Rustom", "Main Tera Hero"]  , 
+		},
+		{
+			"Name" : "Ashish", 
+			"characterName" : "Inspector Pasupathi" , 
+			"otherMovies" : ["Brahmastra", "Student of Year" , "Gangubai Kathaiwadi", "Darlings"] ,  
+		},	 
+		{
+			"Name" : "Prakash Raj",
+			"characterName" : "Ali Bhai", 
+			"otherMovies": ["Major", "K.G.F-2" , "Aakasamantha","Parugu"] ,
+		}]
+}]
+
+function display(){
+	var str = "<table>";
+	for(var i=0;i<movie.length;i++){
+		str = str + "<tr>";
+		str = str + "<td>" + movie[ i ]["name"] + "</td>";
+		str = str + "<td>" + movie[ i ]['director'] + "</td>";
+		str = str + "<td>" + movie[ i ]['releaseDate'] + "</td>";
+		str = str + "<td>" + movie[ i ]['producer'] + "</td>";
+		str = str + "<td>\
+			<input type=\"button\" value=\"View Cast\" onclick=\"showCast('"+ movie[i]['name'] +"')\" >\
+			<input type=\"button\" value=\"Edit\" onclick=\"editMovie("+i+")\" >\
+			<input type=\"button\" value=\"Delete\" onclick=\"deleteMovie("+i+")\" >\
+		</td>";
+		str = str + "</tr>";
+	}
+	str = str + "</table>";
+	document.getElementById("movieList").innerHTML = str;
+}; 
+
+function addMovies() {
+	movie.push({
+		"name" : document.getElementById("movieName").value , 
+		"director" : document.getElementById("directorName").value , 
+		"producer" : document.getElementById("producerName").value ,
+		"releaseDate" : document.getElementById("releaseDate").value , 
+	})
+display()
+
+document.getElementById("movieName").value = "" ; 
+document.getElementById("directorName").value = "" ;  
+document.getElementById("producerName").value = "" ; 
+document.getElementById("releaseDate").value = "" ;  
+
+}
+
+function deleteMovie(item) {
+	movie.splice(item,1) ;
+	display() 
+}
+
+function editMovie(item) {
+	document.getElementById('Movie_edit_popup').style.display = "block" ; 
+	document.getElementById("editDirectorName").value = movie[item]["director"] ;
+	document.getElementById("editMovieName").value = movie[item]["name"] ;
+	document.getElementById("editReleaseDate").value = movie[item]["releaseDate"] ;
+	document.getElementById("editProducer").value = movie[item]["producer"] ;
+}
+
+function updateMovie(item) {
+	document.getElementById('Movie_edit_popup').style.display = "none" ;
+	movie[item]["name"] = document.getElementById('editMovieName') ;
+	movie[item]["director"] = document.getElementById("editDirectorName").value ;
+	movie[item]["releaseDate"] = document.getElementById("editReleaseDate") ; 
+	movie[item]["producer"] = document.getElementById("editProducer") ; 
+	display() 
+}
+
+function closeCast() {
+	document.getElementById("castId").style.display = "none"
+}
+
+function closeOtherMovies() {
+	document.getElementById("otherMoviesId").style.display = "none" ; 
+}
+
+function displayCast() {
+	str = "<table>"
+	for (i = 0 ; i < movie[selectedMovieId]["herosAndCharacters"].length ; i ++ ) {
+		str += "<tr>" ; 
+		str += "<td>" + movie[selectedMovieId]["herosAndCharacters"][i]["Name"] + "</td>";
+		str +=  "<td>" + movie[selectedMovieId]["herosAndCharacters"][i]["characterName"] + "</td>";
+		str += "<td><input type=\"button\" onclick = \"displayOtherMovies('"+ movie[selectedMovieId]["herosAndCharacters"][i]["Name"] +"')\" value=\"View Other Movies\"> <input type=\"button\" value=\"Edit\"> </td>"
+
+	}  
+	document.getElementById("castList").innerHTML = str ;
+	for(a=0 ; a < movie[selectedMovieId]["herosAndCharacters"].length ; a++){
+		if (typeof(movie[selectedMovieId]["herosAndCharacters"][a]) == "object") {
+			console.log(movie[selectedMovieId]["herosAndCharacters"][a]); 
+			// for (b = 0 ; b < movie[selectedMovieId]["herosAndCharacters"][a]; b++) {
+			// 	console.log(b)
+			// 	//console.log(movie[selectedMovieId]["herosAndCharacters"][a][b])
+			// }
+		}
+	}
+}
+
+var selectedMovieId = -1 
+function showCast(object) {
+	document.getElementById("castId").style.display = "block" ; 
+	for (i=0; i < movie.length;i++){
+		if(movie[i]["name"] == object){
+			selectedMovieId = i ; 
+		}
+	}
+	displayCast()
+}
+
+function displayOtherMovies(object) {
+	document.getElementById("otherMoviesId").style.display = "block" ; 
+}
+
+display()
+</script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+
+<style>
+	#box1{ position: absolute; width: 10px; height: 10px; background-color: red; border-radius: 50%; }
+</style>
+<body onmousemove="" >
+	
+	<input id="jump_btn" type="button" value="Jump" onclick="dosomething()" >
+
+	<input id="mobile" type="text" value="" onkeydown="mobile_keydown(event)" >
+
+	<div id="box1" ></div>
+
+</body>
+
+<script>
+
+function mousemove(e){
+	console.log( e );
+	document.getElementById("box1").style.top = e.clientY + "px";
+	document.getElementById("box1").style.left = e.clientX + "px";
+}
+
+document.addEventListener("mousemove", mousemove);
+
+document.getElementById("jump_btn").addEventListener("click", dosomething);
+
+function mobile_keydown(e){
+	console.log(e.keyCode);
+	if( (e.keyCode < 48 || e.keyCode > 57) ){
+		if( e.keyCode != 8 && e.keyCode != 46  ){
+			e.preventDefault();
+		}
+	}
+}
+
+
+</script>

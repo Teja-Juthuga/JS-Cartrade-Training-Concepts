@@ -1,0 +1,34 @@
+<html>
+<body>
+
+	<div style="border:1px solid black; padding:5px; background-color: rgb(100,0,0); position: absolute; left:50%; top:50%;" id="box1" >Box</div>
+	<script>
+
+		r = 0;
+		g = 0;
+		b = 0;
+
+		var l = 1;
+		function doit(){
+			document.getElementById("box1").style.left = l +"px";
+			document.getElementById("box1").style.backgroundColor = "rgb("+r+","+g+","+b+")";
+			document.getElementById("box1").innerHTML = "rgb("+r+","+g+","+b+")";
+			l = l + 1;
+			r = r + 2;
+			g = g + 5;
+			b = b + 1;
+			if( r > 255 ){
+				r = 0;
+			}
+			if( g > 255 ){
+				g = 0;
+			}
+			if( b > 255 ){
+				b = 0;
+			}
+		}	
+		setInterval("doit()",100);
+
+	</script>
+</body>
+</html>

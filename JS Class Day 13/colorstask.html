@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+</head>
+<body>
+<style>
+.colors {
+	border: 1px solid black;
+	padding: 5px;
+	text-align: center;
+}
+</style>
+<script>
+
+	function random_number(s,e){
+		return parseInt(Math.random() * (s - e) + e)
+	}
+	// k = 1
+	// var str = "" ;
+	// for(var i = 0 ; i < 500 ; i++){
+	// 	str += "<div style = 'border: 1px solid black; padding: 5px; display: inline-block;>" + random_number(1,500)  + "</div>" ;
+	// 	k++ ;  
+	// }
+	// document.getElementById('xxxx').innerHTML = str ; 
+
+	r = 0;
+	g = 0;
+	b = 0;
+for(var k = 0 ; k < 10000 ; k++){
+	var new_div = document.createElement("div") ; 
+	new_div.style.display = "inline-block" ;
+	new_div.style.float = "left" ;  
+	new_div.style.padding = "10px" ; 
+	new_div.style.border = "1px solid black" ;
+	var x = "rgba("+random_number(0,255)+","+random_number(0,255)+","+random_number(0,255)+")";
+	new_div.style.backgroundColor = x ;
+	new_div.style.height = "8px" ; 
+	new_div.style.width = "8px" ; 
+	document.body.appendChild(new_div) ; 
+}
+	 
+</script>
+</body>
+</html>

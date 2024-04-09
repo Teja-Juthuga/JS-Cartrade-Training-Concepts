@@ -1,0 +1,927 @@
+<html>
+<head>
+	<title>Bills</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script> 
+</head>
+<style>
+	/* Classes for popup notification : */
+	.popup {display: none; position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5);}
+	.form {position: absolute; border: 1px solid black; top: 200px; left: 200px; background-color: white; box-shadow: 5px 5px 10px black; border-radius: 5px;}
+	.form .head{background-color: skyblue; font-weight: bold; padding: 10px; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom: 1px solid pink;}
+	.form .content{padding: 10px;}
+</style>
+<body>
+<div class="container p-3">
+	<div>
+		<div><input class="btn btn-primary btn-sm" type="button" value="Add Bill"  class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add_bill_popup"></div>
+		<table class="table table-bordered table-sm">
+			<tr>
+				<td>Item_ID</td>
+				<td>Date_of_bill</td>
+				<td>Customer_name</td>
+				<td>Bill_amount</td>
+				<td>Gst_number</td>
+				<td>Choose_one</td>
+			</tr>
+			<tbody id="bills_list">
+			</tbody>
+		</table>
+	</div>
+
+	<div><B>Summary:</B></div>
+	<div id="summary" ></div>
+	<div>&nsbp;</div>
+	<div><B>Date wise Summary:</B></div>
+	<div id="summary2" ></div>
+
+	<div> &nsbp </div>
+	<div><B>Date wise Summary with sub totals:</B></div>
+	<div id="summary3" ></div>
+
+
+	<div  class="modal modal-lg fade" id="add_bill_popup" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title">Add Bill</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body">
+	        	<table>
+					<tr>
+						<td>Bill ID</td><td>Date</td><td>Customer Name</td><td>GST</td>
+
+					</tr>
+					<tr>
+						<td><input class="form-control form-control-sm" type="text" id="new_bill_id"></td>
+						<td><input class="form-control form-control-sm" type="date" id="new_bill_date"></td>
+						<td><input class="form-control form-control-sm" type="text" id="new_bill_cust"></td>
+						<td><input class="form-control form-control-sm" type="text" id="new_bill_gst"></td>
+					</tr>
+				</table>
+				<div>&nbsp;</div>
+				<table class="table table-bordered table-sm">
+					<tr>
+						<td>Sno</td><td>Product</td><td>Qty</td><td>Price</td><td>Total</td><td>Tax</td><td>Net</td>
+					</tr>
+					<tbody id="new_bill_items_list">
+					</tbody>
+					<tr>
+						<td>#</td>
+						<td><select class="form-select form-select-sm" id="new_bill_item_product_id" onchange="new_bill_item_product_change()"></select></td>
+						<td><input class="form-control form-control-sm" type="number" id="new_bill_item_qty" value="1" onchange="new_bill_item_qty_change()" ></td>
+						<td><input class="form-control form-control-sm" type="number" id="new_bill_item_price" ></td>
+						<td id="new_bill_item_total">0</td>
+						<td id="new_bill_item_tax">0</td>
+						<td id="new_bill_item_net">0</td>
+						<td><input type="button" class="btn btn-primary btn-sm" value="+" onclick="new_bill_add()" ></td>
+					</tr>
+				</table>
+				<div>Total Amount: <span id="new_bill_total_amount_form" >0/-</span></div>
+				<div>in words: <span id="new_bill_total_amount_in_words" ></span></div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+	        <button type="button" class="btn btn-primary" onclick="save_bill()">Save Bill</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<div  class="modal modal-lg fade" id="edit_bill_popup" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title">Edit Bill</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body">
+	        	
+	        	<table>
+					<tr>
+						<td>Bill ID</td><td>Date</td><td>Customer Name</td><td>GST</td>
+					<tr>
+						<td><input class="form-control form-control-sm" type="text" id="edit_bill_id"></td>
+						<td><input class="form-control form-control-sm" type="date" id="edit_bill_date"></td>
+						<td><input class="form-control form-control-sm" type="text" id="edit_bill_cust"></td>
+						<td><input class="form-control form-control-sm" type="text" id="edit_bill_gst"></td>
+					</tr>
+				</table>
+
+				<div>&nbsp;</div>
+
+				<table class="table table-bordered table-sm">
+					<tr>
+						<td>Sno</td><td>Product</td><td>Qty</td><td>Price</td><td>Total</td><td>Tax</td><td>Net</td>
+					</tr>
+					<tbody id="edit_bill_items_list">
+					</tbody>
+					<tr>
+						<td>#</td>
+						<td><select class="form-select form-select-sm" id="edit_bill_item_product_id" onchange="edit_bill_item_product_change()"></select></td>
+						<td><input class="form-control form-control-sm" type="number" id="edit_bill_item_qty" value="1" onchange="edit_bill_item_qty_change()" ></td>
+						<td><input class="form-control form-control-sm" type="number" id="edit_bill_item_price" ></td>
+						<td id="edit_bill_item_total">0</td>
+						<td id="edit_bill_item_tax">0</td>
+						<td id="edit_bill_item_net">0</td>
+						<td><input type="button" class="btn btn-primary btn-sm" value="+" onclick="edit_bill_add()" ></td>
+					</tr>
+				</table>
+				<div>Total Amount: <span id="edit_bill_total_amount" >0/-</span></div>
+				<div>in words: <span id="edit_bill_total_amount_in_words" ></span></div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+	        <button type="button" class="btn btn-primary" onclick="update_bills_list()">Update Bill</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+</div>
+
+<script>
+
+products = [
+	{
+		"id": "p1", 
+		"name": "Computer",
+		"price": 45000,
+		"tax": 6
+	},
+	{
+		"id": "p2", 
+		"name": "Air Conditioner",
+		"price": 25000,
+		"tax": 12
+	},
+	{
+		"id": "p3", 
+		"name": "Refridgerator",
+		"price": 12000,
+		"tax": 18
+	},
+	{
+		"id": "p4", 
+		"name": "Printer",
+		"price": 4500,
+		"tax": 6
+	},
+	{
+		"id": "p5", 
+		"name": "Washing Machine",
+		"price": 6750,
+		"tax": 6
+	},
+	{
+		"id": "p6", 
+		"name": "Remote Car",
+		"price": 950,
+		"tax": 2
+	},
+];
+
+bills = [
+    {
+        "bill_id": "01",
+        "date": "2022-01-01",
+        "gst": "333333",
+        "customer_name": "Temporary",
+        "amount": 50000,
+        "items": [
+            {
+                "product_id": "p1",
+                "qty": 3,
+                "price": 50,
+                "total": 150,
+                "tax": 0.5,
+                "net": 225
+            }
+        ]
+    },
+    {
+        "bill_id": "ssss",
+        "date": "2022-09-07",
+        "customer_name": "sss",
+        "gst": "sss",
+        "amount": 84000,
+        "items": [
+            {
+                "product_id": "p2",
+                "qty": 3,
+                "price": 25000,
+                "tax": 12,
+                "total": 75000,
+                "net": 84000
+            },
+            {
+                "product_id": "p1",
+                "qty": 5,
+                "price": 45000,
+                "tax": 6,
+                "total": 225000,
+                "net": 238500
+            },
+            {
+                "product_id": "p3",
+                "qty": 7,
+                "price": 12000,
+                "tax": 18,
+                "total": 84000,
+                "net": 99120
+            },
+            {
+                "product_id": "p5",
+                "qty": 7,
+                "price": 6750,
+                "tax": 6,
+                "total": 47250,
+                "net": 50085
+            },
+            {
+                "product_id": "p6",
+                "qty": 9,
+                "price": 950,
+                "tax": 2,
+                "total": 8550,
+                "net": 8721
+            }
+        ]
+    },
+    {
+        "bill_id": "ssss",
+        "date": "2022-09-07",
+        "customer_name": "sss",
+        "gst": "sss",
+        "amount": 480426,
+        "items": [
+            {
+                "product_id": "p2",
+                "qty": 3,
+                "price": 25000,
+                "tax": 12,
+                "total": 75000,
+                "net": 84000
+            },
+            {
+                "product_id": "p1",
+                "qty": 5,
+                "price": 45000,
+                "tax": 6,
+                "total": 225000,
+                "net": 238500
+            },
+            {
+                "product_id": "p3",
+                "qty": 7,
+                "price": 12000,
+                "tax": 18,
+                "total": 84000,
+                "net": 99120
+            },
+            {
+                "product_id": "p5",
+                "qty": 7,
+                "price": 6750,
+                "tax": 6,
+                "total": 47250,
+                "net": 50085
+            },
+            {
+                "product_id": "p6",
+                "qty": 9,
+                "price": 950,
+                "tax": 2,
+                "total": 8550,
+                "net": 8721
+            }
+        ]
+    },
+    {
+        "bill_id": "ssss333",
+        "date": "2022-09-07",
+        "customer_name": "sss",
+        "gst": "sss",
+        "amount": 480426,
+        "items": [
+            {
+                "product_id": "p2",
+                "qty": 3,
+                "price": 25000,
+                "tax": 12,
+                "total": 75000,
+                "net": 84000
+            },
+            {
+                "product_id": "p1",
+                "qty": 5,
+                "price": 45000,
+                "tax": 6,
+                "total": 225000,
+                "net": 238500
+            },
+            {
+                "product_id": "p3",
+                "qty": 7,
+                "price": 12000,
+                "tax": 18,
+                "total": 84000,
+                "net": 99120
+            },
+            {
+                "product_id": "p5",
+                "qty": 7,
+                "price": 6750,
+                "tax": 6,
+                "total": 47250,
+                "net": 50085
+            },
+            {
+                "product_id": "p6",
+                "qty": 9,
+                "price": 950,
+                "tax": 2,
+                "total": 8550,
+                "net": 8721
+            }
+        ]
+    },
+    {
+        "bill_id": "ssfsd",
+        "date": "2022-09-08",
+        "customer_name": "sdfsdfsd",
+        "gst": "sfsdfsdf",
+        "amount": 1027540,
+        "items": [
+            {
+                "product_id": "p1",
+                "qty": 10,
+                "price": 45000,
+                "tax": 6,
+                "total": 450000,
+                "net": 477000
+            },
+            {
+                "product_id": "p2",
+                "qty": 10,
+                "price": 25000,
+                "tax": 12,
+                "total": 250000,
+                "net": 280000
+            },
+            {
+                "product_id": "p3",
+                "qty": 10,
+                "price": 12000,
+                "tax": 18,
+                "total": 120000,
+                "net": 141600
+            },
+            {
+                "product_id": "p4",
+                "qty": 10,
+                "price": 4500,
+                "tax": 6,
+                "total": 45000,
+                "net": 47700
+            },
+            {
+                "product_id": "p5",
+                "qty": 10,
+                "price": 6750,
+                "tax": 6,
+                "total": 67500,
+                "net": 71550
+            },
+            {
+                "product_id": "p6",
+                "qty": 10,
+                "price": 950,
+                "tax": 2,
+                "total": 9500,
+                "net": 9690
+            }
+        ]
+    }
+];
+
+
+new_bill_items = [];
+
+function generate_bills_list(){
+	vstr = "";
+	for(var i=0;i<bills.length;i++){
+		vstr = vstr + "<tr>";
+		vstr = vstr + "<td>"+bills[i]['bill_id'] + "</td>";
+		vstr = vstr + "<td>"+bills[i]['date'] + "</td>";
+		vstr = vstr + "<td>"+bills[i]['customer_name'] + "</td>";
+		vstr = vstr + "<td>"+bills[i]['amount'] + "</td>";
+		vstr = vstr + "<td>"+bills[i]['gst'] + "</td>";
+		
+		vstr = vstr + `<td>
+		<input type="button" value="Edit" onclick="edit_bills_list(`+i+`)" >
+		<input type="button" value="Delete" onclick="delete_bills_list(`+i+`)">
+		</td>`;
+		vstr = vstr + "</tr>";
+	}
+	document.getElementById("bills_list").innerHTML = vstr;
+}
+
+function generate_product_dropdown(){
+	var vstr = "<option value=''>Select Item</option>";
+	for(var i=0;i<products.length;i++){
+		vstr = vstr + "<option value='" + products[i]['id'] + "' >" + products[i]['name'] + "</option>";
+	}
+	document.getElementById("new_bill_item_product_id").innerHTML = vstr;
+	document.getElementById("edit_bill_item_product_id").innerHTML = vstr;
+}
+
+function new_bill_item_product_change(){
+	var pid = document.getElementById("new_bill_item_product_id").value;
+	for(var i=0;i<products.length;i++){
+		if( products[i]['id'] == pid ){
+			document.getElementById("new_bill_item_price").value = products[i]['price'];
+			document.getElementById("new_bill_item_tax").innerHTML = products[i]['tax'] + "%";
+			var qty = Number(document.getElementById("new_bill_item_qty").value);
+			var tot= products[i]['price'] * qty;
+			document.getElementById("new_bill_item_total").innerHTML = tot;
+			document.getElementById("new_bill_item_net").innerHTML = tot + (tot * products[i]['tax']/100);
+		}
+	}
+}
+
+function new_bill_item_qty_change(){
+			var price = Number(document.getElementById("new_bill_item_price").value);
+			var tax = Number(document.getElementById("new_bill_item_tax").innerHTML.replace("%",""));
+			var qty = Number(document.getElementById("new_bill_item_qty").value);
+			var tot= price * qty;
+			document.getElementById("new_bill_item_total").innerHTML = tot;
+			document.getElementById("new_bill_item_net").innerHTML = tot + (tot * tax/100);
+}
+
+function generate_new_bill_items_list(){
+	var vstr = "";
+	var total = 0;
+	for(var i=0;i<new_bill_items.length;i++){
+		vstr = vstr + "<tr>";
+		vstr = vstr + "<td>" + (i+1) + "</td>";
+		vstr = vstr + "<td>" + get_product_name( new_bill_items[i]['product_id'] ) + "</td>";
+		vstr = vstr + "<td>" + new_bill_items[i]['qty'] + "</td>";
+		vstr = vstr + "<td>" + new_bill_items[i]['price'] + "</td>";
+		vstr = vstr + "<td>" + new_bill_items[i]['total'] + "</td>";
+		vstr = vstr + "<td>" + new_bill_items[i]['tax'] + "</td>";
+		vstr = vstr + "<td>" + new_bill_items[i]['net'] + "</td>";
+		vstr = vstr + "<td><input type=\"button\" value=\"X\" class=\"btn btn-danger btn-sm\" onclick=\"new_bill_item_delete("+i+")\" ></td>";
+		vstr = vstr + "</tr>";
+		total = total + Number(new_bill_items[i]['net']);
+	}
+	document.getElementById("new_bill_items_list").innerHTML = vstr;
+	//document.getElementById("new_bill_total_amount").innerHTML =  total ;
+	document.getElementById("new_bill_total_amount_form").innerHTML = "Rs." + total + "/-";
+	document.getElementById("new_bill_total_amount_in_words").innerHTML = number_to_string( total );
+}
+
+function new_bill_add(){
+
+	var product_id = document.getElementById("new_bill_item_product_id").value;
+	var price = Number(document.getElementById("new_bill_item_price").value);
+	var tax = Number(document.getElementById("new_bill_item_tax").innerHTML.replace("%",""));
+	var qty = Number(document.getElementById("new_bill_item_qty").value);
+	if( qty < 1 ){
+		alert("Please enter Quantity");
+		return false;
+	}
+	if( product_id == "" ){
+		alert("Please select product");
+		return false;	
+	}
+	var tot= price * qty;
+	var net = tot + (tot*tax/100);
+
+	new_bill_items.push({
+		"product_id": product_id,
+		"qty": qty,
+		"price": price,
+		"tax": tax,
+		"total": tot,
+		"net": net,
+	});
+	generate_new_bill_items_list();
+
+	document.getElementById("new_bill_item_product_id").value = "";
+	document.getElementById("new_bill_item_price").value = 0;
+	document.getElementById("new_bill_item_tax").innerHTML = "0%";
+	document.getElementById("new_bill_item_total").innerHTML = "0";
+	document.getElementById("new_bill_item_net").innerHTML = "0";
+	document.getElementById("new_bill_item_qty").value = 0;
+}
+
+function get_product_name(vid){
+	for(var i=0;i<products.length;i++){
+		if( products[i]['id'] == vid ){
+			return products[i]['name'];
+		}
+	}
+	return "NotFound";
+}
+function new_bill_item_delete(vi){
+	new_bill_items.splice(vi,1);
+	generate_new_bill_items_list();
+}
+
+function save_bill(){
+
+	var bill_id = document.getElementById('new_bill_id').value;
+	var date = document.getElementById('new_bill_date').value;
+	var cust = document.getElementById('new_bill_cust').value;
+	var gst = document.getElementById('new_bill_gst').value;
+
+	var amount = 0;
+	for(var i=0;i<new_bill_items.length;i++){
+		amount = amount + new_bill_items[i]['net'];
+	}
+
+	bills.push({
+		"bill_id": bill_id,
+		"date": date,
+		"customer_name": cust,
+		"gst": gst,
+		"amount": amount,
+		"items": new_bill_items
+	});
+	new_bill_items = [];
+	document.getElementById('new_bill_id').value = "";
+	document.getElementById('new_bill_date').value = "";
+	document.getElementById('new_bill_cust').value = "";
+	document.getElementById('new_bill_gst').value = "";
+	document.getElementById('new_bill_total_amount_form').innerHTML = "";
+	document.getElementById("new_bill_total_amount_in_words").innerHTML = "";
+	generate_bills_list();
+	myModal.hide();
+}
+
+
+
+
+const myModal = new bootstrap.Modal('#add_bill_popup', {
+  keyboard: false
+})
+
+//myModal.show();
+
+
+
+
+
+
+/* ###############  edit functions *#################### */
+
+
+
+
+
+edit_bill_items = [];
+
+function edit_bill_item_product_change(){
+	var pid = document.getElementById("edit_bill_item_product_id").value;
+	for(var i=0;i<products.length;i++){
+		if( products[i]['id'] == pid ){
+			document.getElementById("edit_bill_item_price").value = products[i]['price'];
+			document.getElementById("edit_bill_item_tax").innerHTML = products[i]['tax'] + "%";
+			var qty = Number(document.getElementById("edit_bill_item_qty").value);
+			var tot= products[i]['price'] * qty;
+			document.getElementById("edit_bill_item_total").innerHTML = tot;
+			document.getElementById("edit_bill_item_net").innerHTML = tot + (tot * products[i]['tax']/100);
+		}
+	}
+}
+
+function edit_bill_item_qty_change(){
+			var price = Number(document.getElementById("edit_bill_item_price").value);
+			var tax = Number(document.getElementById("edit_bill_item_tax").innerHTML.replace("%",""));
+			var qty = Number(document.getElementById("edit_bill_item_qty").value);
+			var tot= price * qty;
+			document.getElementById("edit_bill_item_total").innerHTML = tot;
+			document.getElementById("edit_bill_item_net").innerHTML = tot + (tot * tax/100);
+}
+
+function edit_bill_add(){
+	var product_id = document.getElementById("edit_bill_item_product_id").value;
+	var price = Number(document.getElementById("edit_bill_item_price").value);
+	var tax = Number(document.getElementById("edit_bill_item_tax").innerHTML.replace("%",""));
+	var qty = Number(document.getElementById("edit_bill_item_qty").value);
+	if( qty < 1 ){
+		alert("Please enter Quantity");
+		return false;
+	}
+	if( product_id == "" ){
+		alert("Please select product");
+		return false;	
+	}
+	var tot= price * qty;
+	var net = tot + (tot*tax/100);
+
+	edit_bill_items.push({
+		"product_id": product_id,
+		"qty": qty,
+		"price": price,
+		"tax": tax,
+		"total": tot,
+		"net": net,
+	});
+
+	generate_edit_bill_items_list();
+
+	document.getElementById("edit_bill_item_product_id").value = "";
+	document.getElementById("edit_bill_item_price").value = 0;
+	document.getElementById("edit_bill_item_tax").innerHTML = "0%";
+	document.getElementById("edit_bill_item_total").innerHTML = "0";
+	document.getElementById("edit_bill_item_net").innerHTML = "0";
+	document.getElementById("edit_bill_item_qty").value = 0;
+}
+
+function generate_edit_bill_items_list(){
+	var vstr = "";
+	var total = 0;
+	for(var i=0;i<edit_bill_items.length;i++){
+		vstr = vstr + "<tr>";
+		vstr = vstr + "<td>" + (i+1) + "</td>";
+		vstr = vstr + "<td>" + get_product_name( edit_bill_items[i]['product_id'] ) + "</td>";
+		vstr = vstr + "<td>" + edit_bill_items[i]['qty'] + "</td>";
+		vstr = vstr + "<td>" + edit_bill_items[i]['price'] + "</td>";
+		vstr = vstr + "<td>" + edit_bill_items[i]['total'] + "</td>";
+		vstr = vstr + "<td>" + edit_bill_items[i]['tax'] + "</td>";
+		vstr = vstr + "<td>" + edit_bill_items[i]['net'] + "</td>";
+		vstr = vstr + "<td><input type=\"button\" value=\"X\" class=\"btn btn-danger btn-sm\" onclick=\"edit_bill_item_delete("+i+")\" ></td>";
+		vstr = vstr + "</tr>";
+		total = total + edit_bill_items[i]['net'];
+	}
+	document.getElementById("edit_bill_items_list").innerHTML = vstr;
+	document.getElementById("edit_bill_total_amount").innerHTML = "Rs." + total + "/-";
+	document.getElementById("edit_bill_total_amount_in_words").innerHTML = number_to_string( total );
+}
+
+function get_product_name(vid){
+	for(var i=0;i<products.length;i++){
+		if( products[i]['id'] == vid ){
+			return products[i]['name'];
+		}
+	}
+	return "NotFound";
+}
+function edit_bill_item_delete(vi){
+	edit_bill_items.splice(vi,1);
+	generate_edit_bill_items_list();
+}
+const editModal = new bootstrap.Modal('#edit_bill_popup');
+var d_id = 0;
+function edit_bills_list(i){
+	d_id = i;
+	
+	editModal.show();
+
+	document.getElementById("edit_bill_id").value = bills[i]['bill_id'];
+	document.getElementById("edit_bill_date").value = bills[i]['date'];
+	document.getElementById("edit_bill_cust").value = bills[i]['customer_name'];
+	document.getElementById("edit_bill_gst").value = bills[i]['gst'];
+	document.getElementById("edit_bill_total_amount").innerHTML = "Rs." + bills[i]['amount'] + "/-";
+	document.getElementById("edit_bill_total_amount_in_words").innerHTML = number_to_string( bills[i]['amount'] );
+	edit_bill_items = bills[i]['items'];
+	generate_edit_bill_items_list();
+
+}
+
+function update_bills_list(){
+	bills[d_id]['bill_id'] = document.getElementById("edit_bill_id").value;
+	bills[d_id]['date'] = document.getElementById("edit_bill_date").value;
+	bills[d_id]['customer_name'] = document.getElementById("edit_bill_cust").value;
+	bills[d_id]['gst'] = document.getElementById("edit_bill_gst").value;
+	bills[d_id]['amount'] = document.getElementById("edit_bill_total_amount").innerHTML;
+
+	generate_bills_list();
+	editModal.hide();
+}
+
+function delete_bills_list(i){
+	bills.splice(i,1);
+	generate_bills_list();
+}
+
+var summary = {};
+function generate_summary(){
+	for(var i=0;i<bills.length;i++){
+		for(var j=0;j<bills[i]['items'].length;j++){
+			var pid = bills[i]['items'][j]['product_id'];
+			var qty = bills[i]['items'][j]['qty'];
+			if( pid in summary == false ){
+				summary[ pid ] = qty;
+			}else{
+				summary[ pid ] += qty;
+			}
+		}
+	}
+	var str = "";
+	for(var p in summary ){
+		str = str + get_product_name( p ) + ": " + summary[p] + "<BR>";
+	}
+	document.getElementById("summary").innerHTML = str;
+}
+
+var summary2 = {};
+function generate_summary2(){
+	for(var i=0;i<bills.length;i++){
+		dt = bills[i]['date'];
+		if( dt in summary2 == false ){
+			summary2[ dt ] = {};
+		}
+		for(var j=0;j<bills[i]['items'].length;j++){
+			var pid = bills[i]['items'][j]['product_id'];
+			var qty = bills[i]['items'][j]['qty'];
+			if( pid in summary2[dt] == false ){
+				summary2[dt][ pid ] = qty;
+			}else{
+				summary2[dt][ pid ] += qty;
+			}
+		}
+	}
+	console.log( summary2 );
+	var str = "<table class='table table-bordered w-auto' >";
+	str = str + "<tr>";
+	str = str + "<td>Product</td>";
+	for(var dt in summary2 ){
+		str = str + "<td>"+dt+"</td>";
+	}
+	str = str + "</tr>";
+	for(var p in products ){
+		str = str + "<tr>";
+		str = str + "<td>" + products[p]['name']+ "</td>";
+		for(var dt in summary2 ){
+			if( products[p]['id'] in summary2[dt] ){
+				str  = str + "<td>" + summary2[dt][ products[p]['id'] ] + "</td>";
+			}else{
+				str  = str + "<td></td>";
+			}
+		}
+		str = str + "</tr>";
+	}
+	str = str + "</table>";
+	document.getElementById("summary2").innerHTML = str;
+}
+
+var summary3 = {};
+function generate_summary3(){
+	for(var i=0;i<bills.length;i++){
+		dt = bills[i]['date'];
+		if( dt in summary3 == false ){
+			summary3[ dt ] = {
+				"products":{},
+				"total":0,
+			};
+		}
+		for(var j=0;j<bills[i]['items'].length;j++){
+			var pid = bills[i]['items'][j]['product_id'];
+			var qty = bills[i]['items'][j]['qty'];
+			if( pid in summary3[dt]['products'] == false ){
+				summary3[dt]['products'][ pid ] = qty;
+			}else{
+				summary3[dt]['products'][ pid ] += qty;
+			}
+		}
+	}
+	console.log( summary3 );
+	var str = "<table class='table table-bordered w-auto' >";
+	str = str + "<tr>";
+	str = str + "<td>Product</td>";
+	for(var dt in summary3 ){
+		str = str + "<td>"+dt+"</td>";
+	}
+	str = str + "</tr>";
+	for(var p in products ){
+		str = str + "<tr>";
+		str = str + "<td>" + products[p]['name']+ "</td>";
+		for(var dt in summary3 ){
+			if( products[p]['id'] in summary3[dt]['products'] ){
+				summary3[dt]['total'] = summary3[dt]['total']+summary3[dt]['products'][ products[p]['id'] ];
+				str  = str + "<td>" + summary3[dt]['products'][ products[p]['id'] ] + "</td>";
+			}else{
+				str  = str + "<td></td>";
+			}
+		}
+		str = str + "</tr>";
+	}
+	str = str + "<tr>";
+	str = str + "<td>Total:</td>";
+	for(var dt in summary3 ){
+		str = str + "<td>"+summary3[dt]['total']+"</td>";
+	}
+	str = str + "</tr>";
+	str = str + "</table>";
+	document.getElementById("summary3").innerHTML = str;
+}
+
+function number_to_string(n){
+	var ones = {
+	 0: "",
+	 1: "one",
+	 2: "two",
+	 3: "three",
+	 4: "four",
+	 5: "five",
+	 6: "six",
+	 7: "seven",
+	 8: "eight",
+	 9: "nine",
+	}
+
+	var tens = {
+	 10: "ten",
+	 11: "eleven",
+	 12: "twelve",
+	 13: "thirteen",
+	 14: "fourteen",
+	 15: "fifteen",
+	 16: "sixteen",
+	 17: "seventeen",
+	 18: "eighteen",
+	 19: "nineteen" 
+	}
+
+	var prefixes = {
+	1: "ten",
+	 2: "twenty",
+	 3: "thirty",
+	 4: "forty",
+	 5: "fifty",
+	 6: "sixty",
+	 7: "seventy",
+	 8: "eighty",
+	 9: "ninety"
+	}
+
+	function get_word( n ){
+		console.log("Get word: " + n );
+		var str = "";
+		if( n >= 11 && n <= 19 ){
+			str = tens[ n ];
+		}else{
+			var n1 = n%10;
+			var n2 = parseInt(n/10);
+			console.log( n1 );
+			console.log( n2 );
+			if( n2 >= 1 ){
+				str = str + prefixes[n2] + " ";
+			}
+			if( n1 >=1 ){
+				str = str + " "+ ones[n1];
+			}
+		}
+		console.log( str );
+		return str;
+	}
+
+	var str = "";
+
+	var n1 = n%100;
+	str = get_word( n1 ) + " " + str;
+	n = parseInt(n/100);
+
+	if( n >= 1 ){
+		n1 = n%10;
+		if( n1 >= 1 ){
+			str = ones[ n1 ] + " hundred " + str;
+		}else{
+
+		}
+		n = parseInt(n/10);
+	}
+	if( n >= 1 ){
+		n1 = n%100;
+		if( n1 >= 1 ){
+			str = get_word(n1) + " Thousand " + str;
+		}
+		n = parseInt(n/100);
+	}
+	if( n >= 1 ){
+		n1 = n%100;
+		str = get_word(n1) + " Lakh " + str;
+		n = parseInt(n/100);
+	}
+	if( n >= 1 ){
+		n1 = n%100;
+		str = get_word(n1) + " Crores " + str;
+		n = parseInt(n/100);
+	}
+
+	return str;
+}
+
+
+generate_bills_list();
+generate_product_dropdown();
+generate_summary();
+generate_summary2();
+generate_summary3();
+
+</script>
+</body>
+</html>

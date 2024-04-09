@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script> 
+	<title>
+	Food Bill Generator	
+	</title>
+</head>
+<body>
+<div class="container">
+	<div>
+	<h3 style="text-align: center; color: #232323 ; margin: 10px;">Bills</h3>
+</div>
+<div>
+	<table class="table table-bordered table-sm m-3">
+		<tr><th>S.no</th><th>Date</th><th>Customer Name</th><th>Total Bill</th></tr>
+		<tbody id="bills_list"></tbody>
+	</table>
+</div>
+	<div style="text-align :center;">
+					<!-- Button trigger modal -->
+		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+		  Generate New Bill
+		</button>
+	</div>
+</div>
+					<!-- Modal -->
+<div class="modal modal-lg fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">New Bill</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div>
+        	<table class="table ">
+        		<tr>
+        			<th>Bill Id</th>
+        			<th>Date</th>
+        			<th>Custome Name</th>
+        			<th>Contact No.</th>
+        		</tr>
+        		<tr>
+        			<td>
+        				<input type="text" class="form-control form-control-sm" name="">
+        			</td>
+        			<td>
+        				<input type="date" class="form-control form-control-sm" name="">
+        			</td>
+        			<td>
+        				<input type="text" class="form-control form-control-sm" name="">
+        			</td>
+        			<td>
+        				<input type="text" class="form-control form-control-sm" name="">
+        			</td>
+        		</tr>
+        	</table>
+        	<table class="table table-bordered">
+        		<tr>
+        			<td>S.No</td><td>Food Item</td><td>Quantity</td><td>Price</td><td>Total Bill</td><td>Tax</td><td>Net Total Bill</td><td></td>
+        		</tr>
+        		<tbody id="New_bill_details"></tbody>
+        		<tr>
+        			<td>#</td>
+        			<td>
+        				<select id="new_bill_items_dropdown" class="form-select form-select-sm" onchange="generate_required_feilds()">
+        				</select>
+        			</td>
+        			<td>
+        				<input style="width:65px;" type="number" name="" value="1" id="new_bill_items_quantity">
+        			</td>
+        			<td id="new_bill_items_price"> 0/-</td>
+        			<td id="new_bill_items_total_bill"> 0/-</td>
+        			<td id="new_bill_items_tax"> 18%</td>
+        			<td id="new_bill_items_net_bill"> 0/- </td>
+        			<td>
+        				<input type="button" class="btn btn-primary btn-sm" value="+" onclick="generate_new_bill_into_list()">
+        			</td>
+        		</tr>
+        	</table>
+        </div>
+        <div>
+       </div>
+
+
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary btn-sm">Save Bill</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+<script>
+	var food_rates = [
+		{ 
+			food_name : "Idly" ,
+			food_id : 1 ,
+			price : 30,
+			tax_percentage: 18 , 
+		} , 
+		{ 
+			food_name : "Sambar Idly" ,
+			food_id : 2,
+			price : 50,
+			tax_percentage: 18 , 
+		} , 
+		{ 
+			food_name : "Bajji" ,
+			food_id : 3 ,
+			price : 40,
+			tax_percentage: 18 , 
+		} , 
+		{ 
+			food_name : "Vada" ,
+			food_id : 4 ,
+			price : 50,
+			tax_percentage: 18 , 
+		} , 
+		{ 
+			food_name : "Dosa" ,
+			food_id : 5 ,
+			price : 50,
+			tax_percentage: 18 , 
+		} , 
+		{ 
+			food_name : "Ulli Dosa" ,
+			food_id : 6 ,
+			price : 60,
+			tax_percentage: 18 , 
+		} , 
+		{ 
+			food_name : "Kheema Dosa" ,
+			food_id : 7 , 
+			price : 200,
+			tax_percentage: 18 , 
+		} , 
+		{ 
+			food_name : "Chicken Dosa" ,
+			food_id : 8 , 
+			price : 160,
+			tax_percentage: 18 , 
+		} , 
+		{ 
+			food_name : "Egg Dosa" ,
+			food_id : 9 , 
+			price : 120,
+			tax_percentage: 18 , 
+		} ,
+		{ 
+			food_name : "Chicken Pizza Dosa" ,
+			food_id : 10 , 
+			price : 250,
+			tax_percentage: 18 , 
+		} ,
+		{ 
+			food_name : "Vada Chicken Curry" ,
+			food_id : 11 , 
+			price : 180,
+			tax_percentage: 18 , 
+		} , 
+		 
+		{ 
+			food_name : "Poori Chicken Curry" ,
+			food_id : 12 , 
+			price : 200,
+			tax_percentage: 18 , 
+		}
+	] 
+ 
+
+new_bill_items = [] 
+
+function generate_food_dropdown() {
+ 	var fstr = "<option value=''>Select Your Fav Food!</option>"
+ 	for (i = 0 ; i < food_rates.length ; i++){
+ 	 fstr += "<option value = '" + food_rates[i]["food_id"] + "'>" + food_rates[i]["food_name"] + "</option>" ; 
+ 	}
+ 	document.getElementById("new_bill_items_dropdown").innerHTML = fstr; 
+}
+
+function generate_required_feilds(){
+	var item_id = document.getElementById("new_bill_items_dropdown").value ; 
+	for (var i =0 ; i < food_rates.length ; i++){
+		if (food_rates[i]["food_id"] == item_id) {
+			document.getElementById("new_bill_items_price").innerHTML = food_rates[i]["price"] ;
+			var qty = document.getElementById("new_bill_items_quantity").value
+			var total = food_rates[i]["price"] * qty ; 
+			document.getElementById("new_bill_items_total_bill").innerHTML = total ;
+			var net_bill = total + (total * 18 / 100 ) ;
+			document.getElementById("new_bill_items_net_bill").innerHTML = net_bill;
+		}
+	}
+}
+
+function generate_new_bill_into_list(){
+	var item_id = document.getElementById("new_bill_items_dropdown").value ; 
+	var price = document.getElementById("new_bill_items_price").value ; 
+	var tax = 18 ; 
+	var qty = Number(document.getElementById("new_bill_items_quantity").value); 
+	console.log(item_id) ; 
+	console.log(price) ;  
+
+		if (qty < 1 ){
+			alert("Please enter Quantity") ; 
+			return false ; 
+		}
+		if (item_id == "") {
+			alert("Please select the Food Item") ; 
+			return false ;
+		}
+		var total = price * qty ; 
+		var net = total + (total * tax / 100 );
+		new_bill_items.push({
+			"food_id" : item_id  ,
+			"Quantity" : qty, 
+			"price" : price ,
+			"tax_percentage": tax ,
+			"total_bill" : total , 
+			"net_bill" : net , 
+		}) ; 
+		console.log(new_bill_items) ;
+		generate_new_bill_items_list();
+		document.getElementById("new_bill_items_dropdown").value = "" ; 
+		document.getElementById("new_bill_items_price").innerHTML = 0 ;
+		document.getElementById("new_bill_items_quantity").value = 0 ; 
+		document.getElementById("new_bill_items_net_bill").innerHTML = 0 ; 
+		document.getElementById("new_bill_items_total_bill").value =  0 ; 
+}
+
+function generate_new_bill_items_list(){
+	var str = "" ; 
+	var total = 0 ; 
+	for (var i = 0; i < new_bill_items.length ; i++){
+		str += "<tr>" ; 
+		str += "<td>" + ( i + 1 ) + "</td>" ; 
+		str += "<td>" +  get_food_name(new_bill_items[i]["food_id"]) + "</td>" ; 
+		str += "<td>" + new_bill_items[i]["Quantity"] + "</td>" ; 
+		str += "<td>" + new_bill_items[i]["price"] + "</td>";
+		str += "<td>" + new_bill_items[i]["total_bill"] + "</td>" ; 
+		str += "<td>" + new_bill_items[i]["tax_percentage"] + "</td>" ; 
+		str += "<td>" + new_bill_items[i]["net_bill"] + "</td>"
+		str += `<td><input type="button" value="X" class="btn btn-danger btn-sm" onclick="new_bill_item_delete(`+i+`)" ></td>`;
+		str += total + new_bill_items[i]["net"] ; 
+	}
+	document.getElementById('New_bill_details').innerHTML = str ; 
+}
+
+function new_bill_item_delete(arg) {
+	new_bill_items.splice(arg , 1 ) ; 
+
+\
+}
+
+function get_food_name(fid) {
+	console.log(fid)
+	for (var i = 0 ; i < food_rates.length ; i++) {
+		if(food_rates[i]["food_id"] == fid){
+			return food_rates[i]["food_name"] ; 
+		}
+		else {
+			return "Not Found" ; 
+		}
+	}
+}
+const myModal = new bootstrap.Modal('#staticBackdrop', {
+  keyboard: false
+})
+
+myModal.show();
+
+generate_food_dropdown()
+</script>
+</body>
+</html>

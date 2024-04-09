@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>CURD Operations</title>
+	<script src="https://kit.fontawesome.com/2a61c2c449.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+	<script src="../bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+<style type="text/css">
+	.bg-container {
+		background-image: url(todo.jpg);
+		background-size: cover;
+		height: 100vh;
+		color: whitesmoke;
+		margin: 0;
+		padding-top: 18px;
+		border: 0;
+
+	}
+	.tasksCard{
+		width: 62%; 
+		background-color: #bbbdbb;
+		padding: 25px;
+		border-radius: 10px;
+		margin: 35px;
+	}
+	#tasksInput{
+	  width: 100%;
+	  padding: 12px 20px;
+	  margin: 8px 0;
+	  display: inline-block;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	  box-sizing: border-box;
+	}
+	.add-btn{
+		height: 35px;
+		width: 75px;
+		border-radius: 15px;
+		border:0 ;
+		color: white;
+		background-color: lightblue;
+	}
+	.add-btn:hover {
+		background-color: lightgreen;
+	}
+	.tasksStyle{
+		height: 45px;
+		width: 62%;
+		background-color: white;
+		border: 15px;
+		border-radius: 15px;
+	}
+</style>
+	
+
+
+<div class="bg-container">
+	<h1 style="text-align: center; font-family:'Roboto'; color:#ab5001;"><strong>Task</strong>&nbspManager </h1>
+	<div class="tasksCard">
+		<div >
+			<input type="text" name="tasksInput" id="tasksInput" placeholder="What needs to be done? ">
+			<button class="add-btn btn btn-primary ">Add </button>
+		</div>
+	</div>
+
+	<div id="to-do-item">
+		
+	</div>
+</div>
+<script>
+	todo_array = 
+	[
+	{	
+		id : 1 ;
+		task_name : "Learn Javascript",
+		task_due_date : "08-10-2022" , 
+		task_description : "Learn as soon as possible!!",  
+	},
+	{	
+		id : 1 ;
+		task_name : "Build Projects",
+		task_due_date : "25-12-2022" , 
+		task_description : "Buildingprojects make you Learn key things!!",  
+	},
+	]
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<script> 
+org_staff = [ 
+	{
+		id : 0 ,
+		name : "Arjun",
+		Manager_id : -1 , 
+	} , 
+	{
+		id : 1 ,
+		name : "Teja",
+		Manager_id : 0 , 
+	} , 
+	{
+		id : 2 ,
+		name : "Ram",
+		Manager_id : 0 , 
+	} ,
+	{
+		id : 3 , 
+		name : "Rohit",
+		Manager_id : 1 , 
+	},
+	{
+		id : 4 ,
+		name : "Karuna",
+		Manager_id : 2 , 
+	}
+]; 
+
+let i = 0 ; 
+while (i < org_staff.length) {
+	if (typeof(org_staff[i]) == "object") {
+		for (items in org_staff[i]) {
+			if (items == "id") {
+				document.write("<br> id: "+org_staff[i][items])
+			}
+		}
+	}
+	i++ ;
+}
+
+
+</script>

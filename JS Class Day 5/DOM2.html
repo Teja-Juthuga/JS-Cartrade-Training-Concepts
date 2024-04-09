@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+	<title>Profit Percentage</title>
+<body>
+<div> 
+	<h2>Profit Percentage</h2>
+	<label for="cp">Cost Price:</label>
+	<input id="costPrice" type="number" name="Cost Price" > <br><br>
+	<label for="p">Profit: </label>
+	<input id="profit" type="number" name="Profit" > <br><br>
+	<input type="submit" name="Submit" onclick="calculate()">
+</div>
+<div>
+	<h3 id="res"></h3>
+</div>
+
+<div> 
+	<h2>Loss Percentage</h2>
+	<label for="loss">Loss: </label>
+	<input id="loss" type="number" name="" > <br><br>
+	<label for="cp">Cost Price:</label>
+	<input id="cp" type="number" name="cp" > <br><br>
+	<input type="submit" name="Submit" onclick="calculate1()">
+</div>
+<div>
+	<h3 id="res1"></h3>
+</div>
+
+<script>
+	let cp = document.getElementById("cp") ;
+	let l = document.getElementById("loss"); 
+	function calculate1() {
+		let output = (l.value * 100 / cp.value) ;  
+		document.getElementById('res1').innerHTML = "Loss Percentage is :" + output ; 
+	}
+
+let cp = document.getElementById("cp") ;
+	let l = document.getElementById("loss"); 
+	function calculate1() {
+		let output = (l.value * 100 / cp.value) ;  
+		document.getElementById('res1').innerHTML = "Loss Percentage is :" + output ; 
+	}
+
+
+</script>
+</body>
+</html>

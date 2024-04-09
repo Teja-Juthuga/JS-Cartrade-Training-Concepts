@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+</head>
+<body>
+	<script> 
+			function generate(){
+	
+	var t = Number(document.getElementById("table").value);
+	var from = Number(document.getElementById("from").value);
+	var to = Number(document.getElementById("to").value);
+
+	var output = "";
+	output = output + "<table>";
+	for(var i=from;i<=to;i++){
+		output = output + "<tr>";
+		output = output + "<td>"+t+"</td><td>X</td><td>"+i+"</td><td>=</td><td>" + (i*t) + "</td>";
+		output = output + "</tr>";
+	}
+	output = output + "</table>";
+
+	document.getElementById("result").innerHTML = output;
+
+	</script>
+</body>
+</html>

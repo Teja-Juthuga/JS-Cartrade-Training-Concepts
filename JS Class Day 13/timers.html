@@ -1,0 +1,53 @@
+<html>
+<body>
+	<div id="a_div" ></div>
+	<input type="button" value="start" onclick="start()"><input type="button" value="stop" onclick="stopit()">
+	<script>
+
+	a = 1;
+	i = 0;
+	sec = 0;
+	min = 0;
+	hrs = 0;
+
+	function start(){
+		i = setInterval("do_timer()", 100 );
+		//setTimeout("do_timer()",50000);
+	}
+	function stopit(){
+		clearInterval(i);
+	}
+
+	function do_timer(){
+		t = "";
+		if( hrs < 10 ){
+			t = "0"+hrs;
+		}else{
+			t = hrs;
+		}
+		if( min < 10 ){
+			t = t+ ":"+ "0"+min;
+		}else{
+			t = t+":" + hrs;
+		}
+		if( sec < 10 ){
+			t = t+ ":"+ "0"+sec;
+		}else{
+			t = t+":" + sec;
+		}
+		document.getElementById("a_div").innerHTML = t;
+		sec = sec + 1;
+		if( sec > 10 ){
+			sec = 0;
+			min = min+1;
+		}
+		if( min > 10 ){
+			min = 0;
+			hrs = hrs+1;
+		}
+		a++;
+	}
+
+	</script>
+</body>
+</html>
